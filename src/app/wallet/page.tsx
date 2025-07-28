@@ -191,6 +191,12 @@ export default function WalletPage() {
           {/* Stats */}
           <section className="py-8 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+                  <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                  Demo Statistics
+                </div>
+              </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {stats.map((stat, index) => (
                   <motion.div

@@ -24,6 +24,8 @@ import {
 } from 'lucide-react';
 import { getWalletState, formatAddress } from '@/lib/educhain';
 import { WalletState, Achievement } from '@/types/blockchain';
+import { ProgressManager, PointsSystem } from '@/lib/certificates';
+import { MissionProgress, Certificate } from '@/types/missions';
 
 export default function ProfilePage() {
   const [walletState, setWalletState] = useState<WalletState>({
@@ -35,10 +37,13 @@ export default function ProfilePage() {
   });
   const [isEditing, setIsEditing] = useState(false);
   const [selectedTab, setSelectedTab] = useState('overview');
+  const [userProgress, setUserProgress] = useState<Record<number, MissionProgress>>({});
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: User },
     { id: 'achievements', label: 'Achievements', icon: Trophy },
+    { id: 'certificates', label: 'Certificates', icon: Award },
     { id: 'progress', label: 'Progress', icon: TrendingUp },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
@@ -144,6 +149,19 @@ export default function ProfilePage() {
 
   useEffect(() => {
     checkWalletState();
+    
+    // Load user progress and certificates
+    const progress = ProgressManager.getAllProgress();
+    setUserProgress(progress);
+    
+    // Extract all certificates from progress
+    const allCertificates: Certificate[] = [];
+    Object.values(progress).forEach((missionProgress: any) => {
+      if (missionProgress.certificates) {
+        allCertificates.push(...missionProgress.certificates);
+      }
+    });
+    setCertificates(allCertificates);
   }, []);
 
   const checkWalletState = async () => {
@@ -385,25 +403,91 @@ export default function ProfilePage() {
             </div>
           )}
 
+          {selectedTab === 'certificates' && (
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+              <h3 className="text-lg font-semibold text-gray-900 mb-6">EduChain Certificates</h3>
+              {certificates.length === 0 ? (
+                <div className="text-center py-12">
+                  <Award className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h4 className="text-lg font-medium text-gray-900 mb-2">No Certificates Yet</h4>
+                  <p className="text-gray-600 mb-4">Complete missions to earn blockchain-verified certificates!</p>
+                  <button className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
+                    Start Learning
+                  </button>
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 gap-6">
+                  {certificates.map((certificate, index) => (
+                    <motion.div
+                      key={certificate.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <Award className="w-5 h-5 text-yellow-500" />
+                          <h4 className="font-medium text-gray-900">{certificate.missionTitle}</h4>
+                        </div>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          certificate.percentage >= 90 ? 'bg-green-100 text-green-800' :
+                          certificate.percentage >= 70 ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-red-100 text-red-800'
+                        }`}>
+                          {certificate.percentage}%
+                        </span>
+                      </div>
+                      
+                      <div className="space-y-2 text-sm text-gray-600 mb-4">
+                        <div className="flex justify-between">
+                          <span>Score:</span>
+                          <span className="font-medium">{certificate.score}/{certificate.maxScore}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Issued:</span>
+                          <span>{new Date(certificate.issuedAt).toLocaleDateString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Token ID:</span>
+                          <span className="font-mono text-xs">{certificate.nftTokenId}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <button className="flex-1 px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm">
+                          Download
+                        </button>
+                        <button className="flex-1 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm">
+                          Verify
+                        </button>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           {selectedTab === 'progress' && (
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
               <h3 className="text-lg font-semibold text-gray-900 mb-6">Learning Progress</h3>
               <div className="grid md:grid-cols-2 gap-8">
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-4">Mission Categories</h4>
+                  <h4 className="font-medium text-gray-900 mb-4">Mission Progress</h4>
                   <div className="space-y-3">
-                    {['Mathematics', 'History', 'Technology', 'Language', 'Arts', 'Business'].map((category, index) => (
-                      <div key={category} className="flex items-center justify-between">
-                        <span className="text-gray-700">{category}</span>
+                    {Object.entries(userProgress).map(([missionId, progress]: [string, any]) => (
+                      <div key={missionId} className="flex items-center justify-between">
+                        <span className="text-gray-700 text-sm">Mission {missionId}</span>
                         <div className="flex items-center gap-2">
                           <div className="w-24 bg-gray-200 rounded-full h-2">
                             <div 
                               className="bg-orange-500 h-2 rounded-full"
-                              style={{ width: `${Math.random() * 100}%` }}
+                              style={{ width: `${(progress.score / progress.maxScore) * 100}%` }}
                             ></div>
                           </div>
-                          <span className="text-sm text-gray-500 w-8 text-right">
-                            {Math.floor(Math.random() * 5) + 1}/5
+                          <span className="text-sm text-gray-500 w-12 text-right">
+                            {progress.score}/{progress.maxScore}
                           </span>
                         </div>
                       </div>
@@ -411,24 +495,24 @@ export default function ProfilePage() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-4">Monthly Activity</h4>
+                  <h4 className="font-medium text-gray-900 mb-4">Statistics</h4>
                   <div className="space-y-3">
-                    {['January', 'February', 'March', 'April', 'May', 'June'].map((month, index) => (
-                      <div key={month} className="flex items-center justify-between">
-                        <span className="text-gray-700">{month}</span>
-                        <div className="flex items-center gap-2">
-                          <div className="w-24 bg-gray-200 rounded-full h-2">
-                            <div 
-                              className="bg-green-500 h-2 rounded-full"
-                              style={{ width: `${Math.random() * 100}%` }}
-                            ></div>
-                          </div>
-                          <span className="text-sm text-gray-500 w-12 text-right">
-                            {Math.floor(Math.random() * 20) + 5} XP
-                          </span>
-                        </div>
-                      </div>
-                    ))}
+                    <div className="flex justify-between">
+                      <span className="text-gray-700">Total Missions:</span>
+                      <span className="font-medium">{Object.keys(userProgress).length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-700">Completed:</span>
+                      <span className="font-medium">{Object.values(userProgress).filter((p: any) => p.isCompleted).length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-700">Total Score:</span>
+                      <span className="font-medium">{Object.values(userProgress).reduce((acc: number, p: any) => acc + p.score, 0)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-700">Certificates:</span>
+                      <span className="font-medium">{certificates.length}</span>
+                    </div>
                   </div>
                 </div>
               </div>
