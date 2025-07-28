@@ -187,20 +187,20 @@ export default function MissionsPage() {
     },
     {
       id: 3,
-      title: 'Blockchain & Web3 Technology',
-      description: 'Master blockchain technology and smart contract development',
-      category: 'Technology',
-      difficulty: 'Hard',
-      totalSteps: 7,
-      maxReward: 1000,
+      title: 'Web Development Fundamentals',
+      description: 'Learn modern web development with HTML, CSS, and JavaScript',
+      category: 'Programming',
+      difficulty: 'Medium',
+      totalSteps: 4,
+      maxReward: 600,
       estimatedTime: '3-4 hours',
       color: 'from-purple-500 to-purple-600',
       icon: Code,
       steps: [
         {
           id: 1,
-          title: 'Blockchain Fundamentals',
-          description: 'Understand the basics of blockchain technology',
+          title: 'HTML Basics',
+          description: 'Learn the fundamentals of HTML markup',
           reward: 150,
           timeEstimate: '30 min',
           isCompleted: false,
@@ -209,59 +209,29 @@ export default function MissionsPage() {
         },
         {
           id: 2,
-          title: 'Cryptocurrency Basics',
-          description: 'Learn about digital currencies and tokens',
-          reward: 120,
-          timeEstimate: '25 min',
+          title: 'CSS Styling',
+          description: 'Master CSS for beautiful web design',
+          reward: 200,
+          timeEstimate: '45 min',
           isCompleted: false,
           isLocked: true,
           type: 'lesson'
         },
         {
           id: 3,
-          title: 'Smart Contract Introduction',
-          description: 'Explore self-executing contracts on blockchain',
-          reward: 180,
-          timeEstimate: '35 min',
-          isCompleted: false,
-          isLocked: true,
-          type: 'lesson'
-        },
-        {
-          id: 4,
-          title: 'Solidity Programming',
-          description: 'Learn to write smart contracts in Solidity',
+          title: 'JavaScript Programming',
+          description: 'Learn JavaScript for interactive web applications',
           reward: 200,
-          timeEstimate: '45 min',
+          timeEstimate: '60 min',
           isCompleted: false,
           isLocked: true,
           type: 'coding'
         },
         {
-          id: 5,
-          title: 'Smart Contract Development',
-          description: 'Build and deploy your first smart contract',
-          reward: 250,
-          timeEstimate: '60 min',
-          isCompleted: false,
-          isLocked: true,
-          type: 'project'
-        },
-        {
-          id: 6,
-          title: 'Web3 Integration',
-          description: 'Connect your applications to blockchain',
-          reward: 150,
-          timeEstimate: '40 min',
-          isCompleted: false,
-          isLocked: true,
-          type: 'lesson'
-        },
-        {
-          id: 7,
-          title: 'Final Blockchain Project',
-          description: 'Create a complete blockchain application',
-          reward: 100,
+          id: 4,
+          title: 'Final Web Project',
+          description: 'Build a complete website using all learned skills',
+          reward: 50,
           timeEstimate: '90 min',
           isCompleted: false,
           isLocked: true,
@@ -271,55 +241,65 @@ export default function MissionsPage() {
     },
     {
       id: 4,
-      title: 'Swahili Language Learning',
-      description: 'Master basic Swahili phrases and cultural expressions',
-      category: 'Language',
-      difficulty: 'Easy',
-      totalSteps: 4,
-      maxReward: 600,
-      estimatedTime: '1.5-2 hours',
-      color: 'from-yellow-500 to-yellow-600',
-      icon: BookOpen,
+      title: 'Blockchain & Cryptocurrency',
+      description: 'Understand blockchain technology and cryptocurrency fundamentals',
+      category: 'Technology',
+      difficulty: 'Hard',
+      totalSteps: 5,
+      maxReward: 1000,
+      estimatedTime: '4-5 hours',
+      color: 'from-orange-500 to-orange-600',
+      icon: Award,
       steps: [
         {
           id: 1,
-          title: 'Basic Greetings',
-          description: 'Learn essential Swahili greetings and introductions',
-          reward: 150,
-          timeEstimate: '20 min',
+          title: 'Blockchain Basics',
+          description: 'Learn the fundamentals of blockchain technology',
+          reward: 200,
+          timeEstimate: '40 min',
           isCompleted: false,
           isLocked: false,
           type: 'lesson'
         },
         {
           id: 2,
-          title: 'Vocabulary Building',
-          description: 'Expand your Swahili vocabulary with common words',
-          reward: 200,
+          title: 'Cryptocurrency Quiz',
+          description: 'Test your understanding of blockchain concepts',
+          reward: 250,
           timeEstimate: '25 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'quiz'
+        },
+        {
+          id: 3,
+          title: 'Smart Contracts',
+          description: 'Learn about smart contracts and their applications',
+          reward: 300,
+          timeEstimate: '50 min',
           isCompleted: false,
           isLocked: true,
           type: 'lesson'
         },
         {
-          id: 3,
-          title: 'Pronunciation Practice',
-          description: 'Practice speaking Swahili with audio exercises',
-          reward: 150,
-          timeEstimate: '30 min',
+          id: 4,
+          title: 'Coding Smart Contract',
+          description: 'Write a simple smart contract',
+          reward: 200,
+          timeEstimate: '60 min',
           isCompleted: false,
           isLocked: true,
-          type: 'audio'
+          type: 'coding'
         },
         {
-          id: 4,
-          title: 'Conversation Skills',
-          description: 'Engage in basic Swahili conversations',
-          reward: 100,
-          timeEstimate: '35 min',
+          id: 5,
+          title: 'Blockchain Final Assessment',
+          description: 'Comprehensive test on blockchain and cryptocurrency',
+          reward: 50,
+          timeEstimate: '45 min',
           isCompleted: false,
           isLocked: true,
-          type: 'practice'
+          type: 'assessment'
         }
       ]
     }
@@ -407,7 +387,7 @@ export default function MissionsPage() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-2xl md:text-3xl font-bold mb-4">
+            <h1 className="text-xl md:text-2xl font-bold mb-4">
               Learning Paths
             </h1>
             <p className="text-xl text-blue-100 max-w-2xl mx-auto">
@@ -549,9 +529,11 @@ export default function MissionsPage() {
                       ></div>
                     </div>
 
-                    {/* Steps */}
+
+
+                    {/* First Step - Always Visible */}
                     <div className="mt-6 space-y-3">
-                      {path.steps.map((step, stepIndex) => {
+                      {path.steps.slice(0, 1).map((step, stepIndex) => {
                         const status = getStepStatus(path.id, step.id);
                         return (
                           <Link 
@@ -598,6 +580,83 @@ export default function MissionsPage() {
                         );
                       })}
                     </div>
+
+                    {/* Steps Toggle Button - Only show if there are more than 1 step */}
+                    {path.steps.length > 1 && (
+                      <div className="mt-4">
+                        <button
+                          onClick={() => togglePathExpansion(path.id)}
+                          className="w-full flex items-center justify-between p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+                        >
+                          <span className="font-medium text-gray-700">
+                            {expandedPaths[path.id] ? 'Hide Remaining Steps' : 'Show Remaining Steps'} ({path.steps.length - 1} more)
+                          </span>
+                          <ChevronRight 
+                            className={`w-5 h-5 text-gray-500 transition-transform ${
+                              expandedPaths[path.id] ? 'rotate-90' : ''
+                            }`}
+                          />
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Remaining Steps - Expandable */}
+                    {expandedPaths[path.id] && path.steps.length > 1 && (
+                      <motion.div 
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="mt-4 space-y-3"
+                      >
+                        {path.steps.slice(1).map((step, stepIndex) => {
+                          const status = getStepStatus(path.id, step.id);
+                          return (
+                            <Link 
+                              key={step.id} 
+                              href={status === 'locked' ? '#' : `/missions/${path.id}/step/${step.id}`}
+                              className={`block step-card ${status === 'completed' ? 'completed' : status === 'active' ? 'active' : ''} ${
+                                status === 'locked' ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:scale-105'
+                              }`}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                                    status === 'completed' ? 'bg-green-100 text-green-600' :
+                                    status === 'active' ? 'bg-blue-100 text-blue-600' :
+                                    'bg-gray-100 text-gray-400'
+                                  }`}>
+                                    {status === 'completed' ? (
+                                      <CheckCircle className="w-5 h-5" />
+                                    ) : status === 'locked' ? (
+                                      <Lock className="w-5 h-5" />
+                                    ) : (
+                                      getTypeIcon(step.type)
+                                    )}
+                                  </div>
+                                  <div>
+                                    <h4 className="font-medium text-gray-900">{step.title}</h4>
+                                    <p className="text-sm text-gray-600">{step.description}</p>
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(step.type)}`}>
+                                    {step.type}
+                                  </span>
+                                  <div className="text-right">
+                                    <div className="text-sm font-medium text-gray-900">{step.reward} credits</div>
+                                    <div className="text-xs text-gray-500">{step.timeEstimate}</div>
+                                  </div>
+                                  {status !== 'locked' && (
+                                    <ChevronRight className="w-5 h-5 text-gray-400" />
+                                  )}
+                                </div>
+                              </div>
+                            </Link>
+                          );
+                        })}
+                      </motion.div>
+                    )}
 
                     {/* Start Button */}
                     <div className="mt-6">

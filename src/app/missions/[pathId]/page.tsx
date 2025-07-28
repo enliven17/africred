@@ -19,7 +19,8 @@ import {
   Star,
   Users,
   Award,
-  ChevronRight
+  ChevronRight,
+  Globe
 } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -87,7 +88,399 @@ export default function LearningPathPage() {
             }
           ]
         },
-        // ... diğer adımlar
+        {
+          id: 3,
+          title: 'Geometry Basics',
+          description: 'Explore fundamental geometric shapes and properties',
+          reward: 120,
+          timeEstimate: '25 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'lesson',
+          content: {
+            videos: [
+              { title: 'Introduction to Geometry', duration: '7:20', url: '#' },
+              { title: 'Basic Shapes', duration: '5:45', url: '#' },
+              { title: 'Angles and Lines', duration: '6:30', url: '#' }
+            ],
+            readings: [
+              { title: 'Geometry Fundamentals', pages: 10, url: '#' },
+              { title: 'Shape Properties', pages: 8, url: '#' }
+            ]
+          }
+        },
+        {
+          id: 4,
+          title: 'Geometry Practice',
+          description: 'Apply geometric concepts to solve problems',
+          reward: 180,
+          timeEstimate: '20 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'practice',
+          content: {
+            exercises: [
+              { title: 'Calculate Area', description: 'Find the area of various shapes', difficulty: 'Easy' },
+              { title: 'Perimeter Problems', description: 'Calculate perimeters of polygons', difficulty: 'Medium' },
+              { title: 'Volume Calculations', description: 'Find volumes of 3D shapes', difficulty: 'Hard' }
+            ]
+          }
+        },
+        {
+          id: 5,
+          title: 'Arithmetic Operations',
+          description: 'Master basic arithmetic and number theory',
+          reward: 100,
+          timeEstimate: '15 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'lesson',
+          content: {
+            videos: [
+              { title: 'Basic Arithmetic', duration: '4:15', url: '#' },
+              { title: 'Number Theory', duration: '5:30', url: '#' }
+            ],
+            readings: [
+              { title: 'Arithmetic Fundamentals', pages: 6, url: '#' }
+            ]
+          }
+        },
+        {
+          id: 6,
+          title: 'Final Assessment',
+          description: 'Comprehensive test covering all mathematics topics',
+          reward: 150,
+          timeEstimate: '30 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'assessment',
+          questions: [
+            {
+              question: 'Solve: 3x + 7 = 22',
+              options: ['3', '4', '5', '6'],
+              correct: 2
+            },
+            {
+              question: 'What is the area of a circle with radius 5?',
+              options: ['25π', '50π', '75π', '100π'],
+              correct: 0
+            },
+            {
+              question: 'Simplify: (2x + 3)(x - 1)',
+              options: ['2x² + x - 3', '2x² - x - 3', '2x² + x + 3', '2x² - x + 3'],
+              correct: 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: 'African History & Culture',
+      description: 'Explore the rich history and cultural heritage of Africa',
+      category: 'History',
+      difficulty: 'Medium',
+      totalSteps: 5,
+      maxReward: 750,
+      estimatedTime: '2-2.5 hours',
+      color: 'from-green-500 to-green-600',
+      icon: Globe,
+      steps: [
+        {
+          id: 1,
+          title: 'Ancient African Civilizations',
+          description: 'Discover the great empires and kingdoms of Africa',
+          reward: 150,
+          timeEstimate: '30 min',
+          isCompleted: false,
+          isLocked: false,
+          type: 'lesson',
+          content: {
+            videos: [
+              { title: 'Ancient Egypt', duration: '8:15', url: '#' },
+              { title: 'Kingdom of Kush', duration: '6:30', url: '#' },
+              { title: 'Great Zimbabwe', duration: '7:45', url: '#' }
+            ],
+            readings: [
+              { title: 'African Civilizations', pages: 12, url: '#' },
+              { title: 'Historical Timeline', pages: 8, url: '#' }
+            ]
+          }
+        },
+        {
+          id: 2,
+          title: 'Historical Timeline Quiz',
+          description: 'Test your knowledge of African history',
+          reward: 200,
+          timeEstimate: '20 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'quiz',
+          questions: [
+            {
+              question: 'Which ancient African civilization built the pyramids?',
+              options: ['Kush', 'Egypt', 'Zimbabwe', 'Mali'],
+              correct: 1
+            },
+            {
+              question: 'The Kingdom of Kush was located in modern-day:',
+              options: ['Egypt', 'Sudan', 'Ethiopia', 'Nigeria'],
+              correct: 1
+            }
+          ]
+        },
+        {
+          id: 3,
+          title: 'Cultural Traditions',
+          description: 'Learn about diverse African cultural practices',
+          reward: 150,
+          timeEstimate: '25 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'lesson',
+          content: {
+            videos: [
+              { title: 'Traditional Music', duration: '5:20', url: '#' },
+              { title: 'Art and Crafts', duration: '6:15', url: '#' },
+              { title: 'Festivals and Celebrations', duration: '7:30', url: '#' }
+            ],
+            readings: [
+              { title: 'Cultural Heritage', pages: 10, url: '#' }
+            ]
+          }
+        },
+        {
+          id: 4,
+          title: 'Cultural Analysis Essay',
+          description: 'Write about African cultural influences',
+          reward: 200,
+          timeEstimate: '40 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'essay',
+          content: {
+            prompt: 'Analyze the impact of African cultural traditions on modern society. Consider music, art, and social practices.',
+            requirements: 'Minimum 500 words, include examples from at least 3 different regions'
+          }
+        },
+        {
+          id: 5,
+          title: 'History Final Project',
+          description: 'Create a comprehensive project on African history',
+          reward: 50,
+          timeEstimate: '45 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'project',
+          content: {
+            projectType: 'Presentation',
+            description: 'Create a presentation about an African civilization of your choice',
+            requirements: 'Include timeline, achievements, and cultural impact'
+          }
+        }
+      ]
+    },
+    {
+      id: 3,
+      title: 'Web Development Fundamentals',
+      description: 'Learn modern web development with HTML, CSS, and JavaScript',
+      category: 'Programming',
+      difficulty: 'Medium',
+      totalSteps: 4,
+      maxReward: 600,
+      estimatedTime: '3-4 hours',
+      color: 'from-purple-500 to-purple-600',
+      icon: Code,
+      steps: [
+        {
+          id: 1,
+          title: 'HTML Basics',
+          description: 'Learn the fundamentals of HTML markup',
+          reward: 150,
+          timeEstimate: '30 min',
+          isCompleted: false,
+          isLocked: false,
+          type: 'lesson',
+          content: {
+            videos: [
+              { title: 'HTML Structure', duration: '6:15', url: '#' },
+              { title: 'HTML Elements', duration: '8:30', url: '#' },
+              { title: 'Forms and Inputs', duration: '7:45', url: '#' }
+            ],
+            readings: [
+              { title: 'HTML Fundamentals', pages: 12, url: '#' },
+              { title: 'Best Practices', pages: 8, url: '#' }
+            ]
+          }
+        },
+        {
+          id: 2,
+          title: 'CSS Styling',
+          description: 'Master CSS for beautiful web design',
+          reward: 200,
+          timeEstimate: '45 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'lesson',
+          content: {
+            videos: [
+              { title: 'CSS Selectors', duration: '5:20', url: '#' },
+              { title: 'Layout with Flexbox', duration: '9:15', url: '#' },
+              { title: 'Responsive Design', duration: '8:30', url: '#' }
+            ],
+            readings: [
+              { title: 'CSS Fundamentals', pages: 15, url: '#' }
+            ]
+          }
+        },
+        {
+          id: 3,
+          title: 'JavaScript Programming',
+          description: 'Learn JavaScript for interactive web applications',
+          reward: 200,
+          timeEstimate: '60 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'coding',
+          content: {
+            exercises: [
+              { title: 'Variables and Functions', description: 'Basic JavaScript concepts', difficulty: 'Easy' },
+              { title: 'DOM Manipulation', description: 'Working with web elements', difficulty: 'Medium' },
+              { title: 'Event Handling', description: 'User interactions', difficulty: 'Hard' }
+            ]
+          }
+        },
+        {
+          id: 4,
+          title: 'Final Web Project',
+          description: 'Build a complete website using all learned skills',
+          reward: 50,
+          timeEstimate: '90 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'project',
+          content: {
+            projectType: 'Website',
+            description: 'Create a personal portfolio website',
+            requirements: 'Include HTML structure, CSS styling, and JavaScript functionality'
+          }
+        }
+      ]
+    },
+    {
+      id: 4,
+      title: 'Blockchain & Cryptocurrency',
+      description: 'Understand blockchain technology and cryptocurrency fundamentals',
+      category: 'Technology',
+      difficulty: 'Hard',
+      totalSteps: 5,
+      maxReward: 1000,
+      estimatedTime: '4-5 hours',
+      color: 'from-orange-500 to-orange-600',
+      icon: Award,
+      steps: [
+        {
+          id: 1,
+          title: 'Blockchain Basics',
+          description: 'Learn the fundamentals of blockchain technology',
+          reward: 200,
+          timeEstimate: '40 min',
+          isCompleted: false,
+          isLocked: false,
+          type: 'lesson',
+          content: {
+            videos: [
+              { title: 'What is Blockchain?', duration: '10:15', url: '#' },
+              { title: 'How Blockchain Works', duration: '12:30', url: '#' },
+              { title: 'Consensus Mechanisms', duration: '8:45', url: '#' }
+            ],
+            readings: [
+              { title: 'Blockchain Fundamentals', pages: 18, url: '#' },
+              { title: 'Cryptography Basics', pages: 12, url: '#' }
+            ]
+          }
+        },
+        {
+          id: 2,
+          title: 'Cryptocurrency Quiz',
+          description: 'Test your understanding of blockchain concepts',
+          reward: 250,
+          timeEstimate: '25 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'quiz',
+          questions: [
+            {
+              question: 'What is a blockchain?',
+              options: ['A type of cryptocurrency', 'A distributed ledger', 'A programming language', 'A database'],
+              correct: 1
+            },
+            {
+              question: 'Which consensus mechanism does Bitcoin use?',
+              options: ['Proof of Stake', 'Proof of Work', 'Delegated Proof of Stake', 'Proof of Authority'],
+              correct: 1
+            }
+          ]
+        },
+        {
+          id: 3,
+          title: 'Smart Contracts',
+          description: 'Learn about smart contracts and their applications',
+          reward: 300,
+          timeEstimate: '50 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'lesson',
+          content: {
+            videos: [
+              { title: 'Smart Contract Basics', duration: '9:20', url: '#' },
+              { title: 'Solidity Programming', duration: '15:30', url: '#' },
+              { title: 'DeFi Applications', duration: '12:15', url: '#' }
+            ],
+            readings: [
+              { title: 'Smart Contract Development', pages: 20, url: '#' }
+            ]
+          }
+        },
+        {
+          id: 4,
+          title: 'Coding Smart Contract',
+          description: 'Write a simple smart contract',
+          reward: 200,
+          timeEstimate: '60 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'coding',
+          content: {
+            exercises: [
+              { title: 'Hello World Contract', description: 'Basic smart contract', difficulty: 'Easy' },
+              { title: 'Token Contract', description: 'Create a simple token', difficulty: 'Medium' },
+              { title: 'DeFi Contract', description: 'Lending protocol', difficulty: 'Hard' }
+            ]
+          }
+        },
+        {
+          id: 5,
+          title: 'Blockchain Final Assessment',
+          description: 'Comprehensive test on blockchain and cryptocurrency',
+          reward: 50,
+          timeEstimate: '45 min',
+          isCompleted: false,
+          isLocked: true,
+          type: 'assessment',
+          questions: [
+            {
+              question: 'What is the main advantage of blockchain?',
+              options: ['Speed', 'Decentralization', 'Cost', 'Simplicity'],
+              correct: 1
+            },
+            {
+              question: 'Which cryptocurrency was the first?',
+              options: ['Ethereum', 'Bitcoin', 'Litecoin', 'Ripple'],
+              correct: 1
+            }
+          ]
+        }
       ]
     }
   ];

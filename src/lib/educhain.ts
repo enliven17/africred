@@ -10,7 +10,7 @@ export const EDUCHAIN_TESTNET: EduChainConfig = {
     decimals: 18,
   },
   rpcUrls: ['https://rpc.open-campus-codex.gelato.digital'],
-  blockExplorerUrls: ['https://testnet-explorer.edu-chain.raas.gelato.cloud'],
+  blockExplorerUrls: ['https://edu-chain-testnet.blockscout.com'],
   faucetUrls: [
     'https://drpc.org/faucet/open-campus-codex',
     'https://educhain-community-faucet.vercel.app/',
@@ -116,6 +116,7 @@ export const connectWallet = async (): Promise<WalletState> => {
       balance: balance ? (parseInt(balance, 16) / Math.pow(10, 18)).toFixed(4) : '0',
       chainId,
       isCorrectNetwork,
+      explorerUrl: `${config.blockExplorerUrls[0]}/address/${address}`,
     };
   } catch (error) {
     console.error('Failed to connect wallet:', error);
@@ -168,6 +169,7 @@ export const getWalletState = async (): Promise<WalletState> => {
       balance: balance ? (parseInt(balance, 16) / Math.pow(10, 18)).toFixed(4) : '0',
       chainId,
       isCorrectNetwork,
+      explorerUrl: `${config.blockExplorerUrls[0]}/address/${address}`,
     };
   } catch (error) {
     console.error('Failed to get wallet state:', error);
@@ -189,4 +191,124 @@ export const formatAddress = (address: string): string => {
 export const getFaucetUrl = (isTestnet: boolean = true): string => {
   const config = getEduChainConfig(isTestnet);
   return config.faucetUrls[0] || '';
+};
+
+// Educator verification functions
+export const verifyEducator = async (educatorData: {
+  background: string;
+  experience: string;
+  expertise: string[];
+  bio: string;
+  documents?: File[];
+}): Promise<{ success: boolean; certificateHash?: string; error?: string }> => {
+  if (typeof (window as any).ethereum === 'undefined') {
+    throw new Error('MetaMask is not installed');
+  }
+
+  try {
+    // TODO: Call EduChain smart contract for educator verification
+    // This would typically involve:
+    // 1. Uploading documents to IPFS
+    // 2. Creating verification request on blockchain
+    // 3. Waiting for approval from governance
+    
+    console.log('Verifying educator:', educatorData);
+    
+    // Simulate blockchain transaction
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    
+    // Mock certificate hash
+    const certificateHash = '0x' + Math.random().toString(16).substr(2, 40);
+    
+    return {
+      success: true,
+      certificateHash
+    };
+  } catch (error) {
+    console.error('Failed to verify educator:', error);
+    return {
+      success: false,
+      error: 'Failed to verify educator status'
+    };
+  }
+};
+
+// Mission creation functions
+export const createMission = async (missionData: {
+  title: string;
+  description: string;
+  category: string;
+  difficulty: string;
+  estimatedTime: string;
+  maxReward: number;
+  tags: string[];
+  requirements: string[];
+  steps: any[];
+}): Promise<{ success: boolean; missionId?: string; transactionHash?: string; error?: string }> => {
+  if (typeof (window as any).ethereum === 'undefined') {
+    throw new Error('MetaMask is not installed');
+  }
+
+  try {
+    // TODO: Call EduChain smart contract for mission creation
+    // This would typically involve:
+    // 1. Uploading mission content to IPFS
+    // 2. Creating mission on blockchain
+    // 3. Setting up reward distribution
+    
+    console.log('Creating mission:', missionData);
+    
+    // Simulate blockchain transaction
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Mock mission ID and transaction hash
+    const missionId = 'mission_' + Math.random().toString(16).substr(2, 8);
+    const transactionHash = '0x' + Math.random().toString(16).substr(2, 64);
+    
+    return {
+      success: true,
+      missionId,
+      transactionHash
+    };
+  } catch (error) {
+    console.error('Failed to create mission:', error);
+    return {
+      success: false,
+      error: 'Failed to create mission'
+    };
+  }
+};
+
+// Check if user is verified educator
+export const checkEducatorStatus = async (address: string): Promise<{
+  isVerified: boolean;
+  certificateHash?: string;
+  verificationDate?: number;
+}> => {
+  if (typeof (window as any).ethereum === 'undefined') {
+    return { isVerified: false };
+  }
+
+  try {
+    // TODO: Query EduChain smart contract for educator status
+    // This would check if the address has a valid educator certificate NFT
+    
+    console.log('Checking educator status for:', address);
+    
+    // Mock verification check
+    const isVerified = Math.random() > 0.5; // 50% chance for demo
+    
+    if (isVerified) {
+      return {
+        isVerified: true,
+        certificateHash: '0x' + Math.random().toString(16).substr(2, 40),
+        verificationDate: Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000 // Random date within last 30 days
+      };
+    }
+    
+    return { isVerified: false };
+  } catch (error) {
+    console.error('Failed to check educator status:', error);
+    return { isVerified: false };
+  }
 }; 

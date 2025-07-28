@@ -157,7 +157,7 @@ export default function WalletPage() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-2xl md:text-3xl font-bold mb-4">
+            <h1 className="text-xl md:text-2xl font-bold mb-4">
               My Wallet
             </h1>
             <p className="text-xl text-blue-100 max-w-2xl mx-auto">
@@ -241,7 +241,7 @@ export default function WalletPage() {
                     <Copy className="w-4 h-4" />
                   </button>
                   <a
-                    href={`https://testnet-explorer.edu-chain.raas.gelato.cloud/address/${walletState.address}`}
+                    href={walletState.explorerUrl || `https://edu-chain-testnet.blockscout.com/address/${walletState.address}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-100"

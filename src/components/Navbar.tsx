@@ -2,17 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Link as LinkIcon,
+import {
+  Link as LinkIcon, // Renamed to avoid conflict with next/link
   ChevronDown,
   CheckCircle,
   Zap,
-  AlertTriangle
+  AlertTriangle,
+  X,
+  Loader2
 } from 'lucide-react';
 import { connectWallet, switchToEduChain, getWalletState, formatAddress, getFaucetUrl } from '@/lib/educhain';
 import { WalletState } from '@/types/blockchain';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 export default function Navbar() {
   const [walletState, setWalletState] = useState<WalletState>({
@@ -82,8 +85,17 @@ export default function Navbar() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Link href="/" className="text-2xl font-bold gradient-text hover:opacity-80 transition-opacity">
-                  AfriCred
+                <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                  <Image
+                    src="/logo.png"
+                    alt="AfriCred Logo"
+                    width={32}
+                    height={32}
+                    className="w-8 h-8"
+                  />
+                  <span className="text-2xl font-bold gradient-text">
+                    AfriCred
+                  </span>
                 </Link>
               </div>
             </div>
@@ -97,6 +109,16 @@ export default function Navbar() {
                 }`}
               >
                 Missions
+              </Link>
+              <Link 
+                href="/create-mission"
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  isActive('/create-mission') 
+                    ? 'text-blue-600 bg-blue-50 border border-blue-200' 
+                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                }`}
+              >
+                Create Mission
               </Link>
               <Link 
                 href="/community"

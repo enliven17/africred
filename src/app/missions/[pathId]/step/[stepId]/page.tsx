@@ -31,6 +31,7 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { ProgressManager, PointsSystem, CertificateService } from '@/lib/certificates';
 import { MissionProgress, QuizAnswer, MissionSubmission } from '@/types/missions';
+import { getWalletState } from '@/lib/educhain';
 
 export default function StepPage() {
   const params = useParams();
@@ -47,6 +48,7 @@ export default function StepPage() {
   const [stepResults, setStepResults] = useState<any>(null);
   const [startTime, setStartTime] = useState<number>(0);
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [walletConnected, setWalletConnected] = useState(false);
 
   // Step data (gerçek uygulamada API'den gelecek)
   const stepData = {
@@ -88,6 +90,12 @@ export default function StepPage() {
   };
 
   useEffect(() => {
+    const checkWallet = async () => {
+      const walletState = await getWalletState();
+      setWalletConnected(walletState.isConnected);
+    };
+    
+    checkWallet();
     const progress = ProgressManager.getAllProgress();
     setUserProgress(progress);
     setStartTime(Date.now());
@@ -214,6 +222,28 @@ export default function StepPage() {
       default: return 'bg-gray-100 text-gray-600';
     }
   };
+
+  // Wallet connection check
+  if (!walletConnected) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">
+        <div className="max-w-md mx-auto text-center">
+          <div className="card-modern p-8">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Award className="w-8 h-8 text-blue-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Wallet Required</h2>
+            <p className="text-gray-600 mb-6">
+              You need to connect your EduChain wallet to access learning content and earn rewards.
+            </p>
+            <Link href="/" className="btn-primary">
+              Connect Wallet
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">

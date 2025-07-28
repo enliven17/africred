@@ -81,7 +81,7 @@ export default function Home() {
             className="text-center"
           >
             <h1 className="text-3xl md:text-4xl font-bold mb-6">
-              Welcome to <span className="gradient-text">AfriCred</span>
+              Welcome to <span className="text-yellow-300 font-extrabold">AfriCred</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100">
               Africa's First Earn-to-Learn Platform on EduChain

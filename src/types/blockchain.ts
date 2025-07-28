@@ -17,6 +17,7 @@ export interface WalletState {
   balance: string | null;
   chainId: string | null;
   isCorrectNetwork: boolean;
+  explorerUrl?: string;
 }
 
 export interface Transaction {
@@ -60,10 +61,14 @@ export interface UserProfile {
   address: string;
   username: string;
   avatar: string;
+  role: 'student' | 'educator';
   level: number;
   experience: number;
   totalRewards: number;
   completedMissions: number;
+  createdMissions: number; // For educators
   achievements: Achievement[];
   joinDate: number;
+  verifiedEducator: boolean; // EduChain verification
+  educatorCertificate?: string; // NFT certificate hash
 } 

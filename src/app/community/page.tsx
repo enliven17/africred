@@ -18,19 +18,14 @@ import {
   Calendar,
   Wallet
 } from 'lucide-react';
+import { getWalletState } from '@/lib/educhain';
+import { useEffect } from 'react';
 
 export default function CommunityPage() {
   const [newPost, setNewPost] = useState('');
   const [selectedTab, setSelectedTab] = useState('discussions');
-
-  const tabs = [
-    { id: 'discussions', label: 'Discussions', icon: MessageCircle },
-    { id: 'achievements', label: 'Achievements', icon: Award },
-    { id: 'leaderboard', label: 'Leaderboard', icon: TrendingUp },
-    { id: 'events', label: 'Events', icon: Calendar },
-  ];
-
-  const discussions = [
+  const [walletConnected, setWalletConnected] = useState(false);
+  const [posts, setPosts] = useState([
     {
       id: 1,
       author: {
@@ -73,7 +68,25 @@ export default function CommunityPage() {
       timeAgo: '6 hours ago',
       tags: ['entrepreneurship', 'study-group', 'collaboration']
     }
+  ]);
+
+  useEffect(() => {
+    const checkWallet = async () => {
+      const walletState = await getWalletState();
+      setWalletConnected(walletState.isConnected);
+    };
+    
+    checkWallet();
+  }, []);
+
+  const tabs = [
+    { id: 'discussions', label: 'Discussions', icon: MessageCircle },
+    { id: 'achievements', label: 'Achievements', icon: Award },
+    { id: 'leaderboard', label: 'Leaderboard', icon: TrendingUp },
+    { id: 'events', label: 'Events', icon: Calendar },
   ];
+
+
 
   const achievements = [
     {
@@ -117,10 +130,46 @@ export default function CommunityPage() {
     { label: 'Study Groups', value: '156', icon: UserPlus, color: 'text-blue-500' },
   ];
 
+    // Wallet connection check for posting
+  const handlePost = () => {
+    if (!walletConnected) {
+      alert('Please connect your wallet to post messages in the community.');
+      return;
+    }
+    
+    if (!newPost.trim()) {
+      alert('Please enter a message to post.');
+      return;
+    }
+
+    // Create new post
+    const newPostObj = {
+      id: posts.length + 1,
+      author: {
+        name: 'You',
+        avatar: '/api/placeholder/40/40',
+        level: 1,
+        country: 'Your Country'
+      },
+      content: newPost,
+      likes: 0,
+      comments: 0,
+      timeAgo: 'Just now',
+      tags: []
+    };
+
+    // Add new post to the beginning of the list
+    setPosts([newPostObj, ...posts]);
+    setNewPost('');
+    
+    // Show success message
+    alert('Post shared successfully! 🎉');
+  };
+
   return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-    {/* Header */}
-    <div className="gradient-bg text-white py-16">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      {/* Header */}
+      <div className="gradient-bg text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -128,7 +177,7 @@ export default function CommunityPage() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-2xl md:text-3xl font-bold mb-4">
+            <h1 className="text-xl md:text-2xl font-bold mb-4">
               AfriCred Community
             </h1>
             <p className="text-xl text-blue-100 max-w-2xl mx-auto">
@@ -196,10 +245,16 @@ export default function CommunityPage() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-colors flex items-center gap-2"
+                    onClick={handlePost}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+                      walletConnected 
+                        ? 'bg-blue-500 text-white hover:bg-blue-600' 
+                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    }`}
+                    disabled={!walletConnected}
                   >
                     <Send className="w-4 h-4" />
-                    Post
+                    {walletConnected ? 'Post' : 'Connect Wallet'}
                   </motion.button>
                 </div>
               </div>
@@ -231,7 +286,7 @@ export default function CommunityPage() {
           {/* Tab Content */}
           {selectedTab === 'discussions' && (
             <div className="space-y-6">
-              {discussions.map((discussion, index) => (
+              {posts.map((discussion, index) => (
                 <motion.div
                   key={discussion.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -273,7 +328,7 @@ export default function CommunityPage() {
                         </button>
                       </div>
                       <div className="flex gap-2 mt-3">
-                        {discussion.tags.map((tag) => (
+                        {discussion.tags.map((tag: string) => (
                           <span
                             key={tag}
                             className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
