@@ -1,4 +1,4 @@
-import { Certificate, MissionSubmission } from '@/types/missions';
+import { Certificate, LessonSubmission } from '@/types/lessons';
 
 // EduChain Certificate Smart Contract ABI (simplified)
 const CERTIFICATE_ABI = [
@@ -147,20 +147,20 @@ export class CertificateService {
 export class ProgressManager {
   private static STORAGE_KEY = 'africred_progress';
 
-  static saveProgress(missionId: number, progress: any): void {
+  static saveProgress(lessonId: number, progress: any): void {
     try {
       const allProgress = this.getAllProgress();
-      allProgress[missionId] = progress;
+      allProgress[lessonId] = progress;
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(allProgress));
     } catch (error) {
       console.error('Failed to save progress:', error);
     }
   }
 
-  static getProgress(missionId: number): any {
+  static getProgress(lessonId: number): any {
     try {
       const allProgress = this.getAllProgress();
-      return allProgress[missionId] || null;
+      return allProgress[lessonId] || null;
     } catch (error) {
       console.error('Failed to get progress:', error);
       return null;
@@ -172,7 +172,7 @@ export class ProgressManager {
       // Her zaman demo data'yı döndür (development için)
       const demoProgress = {
         1: {
-          missionId: '1',
+          lessonId: '1',
           missionTitle: 'Mathematics Fundamentals',
           score: 85,
           maxScore: 100,
@@ -180,7 +180,7 @@ export class ProgressManager {
           issuedAt: new Date().toISOString()
         },
         2: {
-          missionId: '2',
+          lessonId: '2',
           missionTitle: 'Blockchain Basics',
           score: 92,
           maxScore: 100,
@@ -188,7 +188,7 @@ export class ProgressManager {
           issuedAt: new Date().toISOString()
         },
         3: {
-          missionId: '3',
+          lessonId: '3',
           missionTitle: 'Smart Contract Development',
           score: 78,
           maxScore: 100,

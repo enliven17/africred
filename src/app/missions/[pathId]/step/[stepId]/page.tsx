@@ -30,7 +30,7 @@ import {
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { ProgressManager, PointsSystem, CertificateService } from '@/lib/certificates';
-import { MissionProgress, QuizAnswer, MissionSubmission } from '@/types/missions';
+import { LessonProgress, QuizAnswer, LessonSubmission } from '@/types/lessons';
 import { getWalletState } from '@/lib/educhain';
 
 export default function StepPage() {
@@ -164,8 +164,8 @@ export default function StepPage() {
       const points = PointsSystem.calculatePoints(finalScore, totalTime, 'Easy');
 
       // Save progress
-      const progress: MissionProgress = {
-        missionId: pathId,
+      const progress: LessonProgress = {
+        lessonId: pathId,
         isCompleted: true,
         currentStep: stepId,
         totalSteps: 6, // Bu dinamik olmalı
@@ -178,8 +178,8 @@ export default function StepPage() {
         certificates: []
       };
 
-      ProgressManager.saveProgress(`${pathId}-${stepId}`, progress);
-      setUserProgress(prev => ({ ...prev, [`${pathId}-${stepId}`]: progress }));
+      ProgressManager.saveProgress(pathId, progress);
+      setUserProgress(prev => ({ ...prev, [pathId]: progress }));
 
       // Set results
       setStepResults({
@@ -403,7 +403,7 @@ export default function StepPage() {
               <div className="card-modern p-6">
                 <div className="space-y-3">
                   <button
-                    onClick={() => ProgressManager.saveProgress(`${pathId}-${stepId}`, { currentAnswers, startTime })}
+                    onClick={() => ProgressManager.saveProgress(pathId, { currentAnswers, startTime })}
                     className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors"
                   >
                     <Save className="w-4 h-4" />

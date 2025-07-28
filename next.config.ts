@@ -43,7 +43,7 @@ const nextConfig: NextConfig = {
   compress: true,
   
   // Production optimizations
-  swcMinify: true,
+  // swcMinify is enabled by default in Next.js 15+
   
   // Environment variables
   env: {

@@ -32,14 +32,14 @@ import {
   GraduationCap
 } from 'lucide-react';
 import { ProgressManager, PointsSystem, CertificateService } from '@/lib/certificates';
-import { MissionProgress, QuizAnswer, MissionSubmission } from '@/types/missions';
+import { LessonProgress, QuizAnswer, LessonSubmission } from '@/types/lessons';
 import Link from 'next/link';
 
 export default function MissionsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedDifficulty, setSelectedDifficulty] = useState('All');
-  const [userProgress, setUserProgress] = useState<Record<number, MissionProgress>>({});
+  const [userProgress, setUserProgress] = useState<Record<number, LessonProgress>>({});
   const [expandedPaths, setExpandedPaths] = useState<Record<number, boolean>>({});
 
   const categories = ['All', 'Mathematics', 'History', 'Technology', 'Science', 'Language', 'Arts', 'Business'];
@@ -319,15 +319,15 @@ export default function MissionsPage() {
   }, []);
 
   const getStepProgress = (pathId: number) => {
-    const pathProgress = Object.values(userProgress).filter(p => p.missionId === pathId);
+    const pathProgress = Object.values(userProgress).filter(p => p.lessonId === pathId);
     return pathProgress.length;
   };
 
   const getStepStatus = (pathId: number, stepId: number) => {
-    const progress = userProgress[`${pathId}-${stepId}`];
+    const progress = userProgress[pathId];
     if (progress?.isCompleted) return 'completed';
     if (stepId === 1) return 'active';
-    const previousStep = userProgress[`${pathId}-${stepId - 1}`];
+    const previousStep = userProgress[pathId];
     if (previousStep?.isCompleted) return 'active';
     return 'locked';
   };
