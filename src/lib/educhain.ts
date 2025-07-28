@@ -286,6 +286,7 @@ export const checkEducatorStatus = async (address: string): Promise<{
   verificationDate?: number;
 }> => {
   if (typeof (window as any).ethereum === 'undefined') {
+    console.log('❌ MetaMask not available in checkEducatorStatus');
     return { isVerified: false };
   }
 
@@ -293,22 +294,28 @@ export const checkEducatorStatus = async (address: string): Promise<{
     // TODO: Query EduChain smart contract for educator status
     // This would check if the address has a valid educator certificate NFT
     
-    console.log('Checking educator status for:', address);
+    console.log('🔍 Checking educator status for address:', address);
     
-    // Mock verification check
-    const isVerified = Math.random() > 0.5; // 50% chance for demo
+    // For demo purposes, we'll use a deterministic check based on address
+    // In real implementation, this would query the blockchain
+    const addressLastChar = address.slice(-1).toLowerCase();
+    const isVerified = ['a', 'b', 'c', 'd', 'e'].includes(addressLastChar); // 5/16 chance for demo
+    
+    console.log(`📊 Address ends with '${addressLastChar}', verification result: ${isVerified}`);
     
     if (isVerified) {
+      const certificateHash = '0x' + address.slice(2, 10) + Math.random().toString(16).substr(2, 32);
       return {
         isVerified: true,
-        certificateHash: '0x' + Math.random().toString(16).substr(2, 40),
+        certificateHash,
         verificationDate: Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000 // Random date within last 30 days
       };
     }
     
+    console.log('❌ Educator not verified');
     return { isVerified: false };
   } catch (error) {
-    console.error('Failed to check educator status:', error);
+    console.error('❌ Failed to check educator status:', error);
     return { isVerified: false };
   }
 }; 

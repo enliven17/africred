@@ -28,7 +28,8 @@ import {
 } from 'lucide-react';
 import { ProgressManager, PointsSystem } from '@/lib/certificates';
 import { MissionProgress, Certificate } from '@/types/missions';
-import { getWalletState } from '@/lib/educhain';
+import { getWalletState, verifyEducator } from '@/lib/educhain';
+import { certificateService, CertificateData, EducatorCertificate } from '@/lib/educhain-certificates';
 import Link from 'next/link';
 
 export default function ProfilePage() {
@@ -40,6 +41,7 @@ export default function ProfilePage() {
   const [userRole, setUserRole] = useState<'student' | 'educator'>('student');
   const [isVerifiedEducator, setIsVerifiedEducator] = useState(false);
   const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [certificateStatus, setCertificateStatus] = useState('');
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: User },
@@ -222,9 +224,35 @@ export default function ProfilePage() {
                   Cancel
                 </button>
                 <button
-                  onClick={() => {
-                    setIsVerifiedEducator(true);
-                    setShowVerificationModal(false);
+                  onClick={async () => {
+                    try {
+                      // Get wallet state to get the address
+                      const walletState = await getWalletState();
+                      if (!walletState.isConnected || !walletState.address) {
+                        alert('Please connect your wallet first');
+                        return;
+                      }
+
+                      // Call the verification function
+                      const result = await verifyEducator({
+                        background: 'university', // You can get this from form state
+                        experience: '3-5',
+                        expertise: ['Technology', 'Mathematics'],
+                        bio: 'Experienced educator with expertise in technology and mathematics.',
+                        documents: []
+                      });
+
+                      if (result.success) {
+                        setIsVerifiedEducator(true);
+                        setShowVerificationModal(false);
+                        alert('Verification submitted successfully! You are now a verified educator.');
+                      } else {
+                        alert('Verification failed: ' + (result.error || 'Unknown error'));
+                      }
+                    } catch (error) {
+                      console.error('Verification error:', error);
+                      alert('Verification failed. Please try again.');
+                    }
                   }}
                   className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                 >
@@ -447,6 +475,42 @@ export default function ProfilePage() {
 
                 {activeTab === 'certificates' && (
                   <div className="space-y-6">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-semibold text-gray-900">Your Certificates</h3>
+                      <button
+                        onClick={async () => {
+                          try {
+                            // Simulate checking certificates
+                            await new Promise(resolve => setTimeout(resolve, 1500));
+                            
+                            const demoCertificates = [
+                              {
+                                tokenId: '123456',
+                                missionTitle: 'Introduction to Blockchain Technology',
+                                score: 95,
+                                maxScore: 100,
+                                issuedAt: Date.now() - 86400000 // 1 day ago
+                              },
+                              {
+                                tokenId: '789012',
+                                missionTitle: 'Advanced Mathematics',
+                                score: 88,
+                                maxScore: 100,
+                                issuedAt: Date.now() - 172800000 // 2 days ago
+                              }
+                            ];
+                            
+                            alert(`Found ${demoCertificates.length} demo certificates!\n\n1. Blockchain Technology (95/100)\n2. Advanced Mathematics (88/100)\n\nThese are demo certificates for presentation purposes.`);
+                          } catch (error) {
+                            alert('Demo certificate check completed!');
+                          }
+                        }}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm"
+                      >
+                        🔍 Check Demo Certificates
+                      </button>
+                    </div>
+                    
                     {certificates.length === 0 ? (
                       <div className="text-center py-12">
                         <Award className="w-16 h-16 text-gray-400 mx-auto mb-4" />
@@ -486,6 +550,20 @@ export default function ProfilePage() {
                                 </button>
                                 <button className="px-3 py-1 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors">
                                   <Share2 className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={async () => {
+                                    try {
+                                      // Simulate verification
+                                      await new Promise(resolve => setTimeout(resolve, 1000));
+                                      alert(`✅ Demo Certificate Verified!\nToken ID: ${certificate.nftTokenId}\n\nThis is a demo verification for presentation purposes.`);
+                                    } catch (error) {
+                                      alert('Demo verification completed!');
+                                    }
+                                  }}
+                                  className="px-3 py-1 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors"
+                                >
+                                  🔍 Verify Demo
                                 </button>
                               </div>
                             </div>
@@ -586,6 +664,65 @@ export default function ProfilePage() {
                                 Create New Mission
                               </button>
                             </Link>
+                            
+                            {/* Demo Certificate Creation */}
+                            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                              <h6 className="font-semibold text-blue-800 mb-3">🎓 Demo Certificate Creation</h6>
+                              <p className="text-sm text-blue-700 mb-3">
+                                Create sample certificates for demonstration purposes.
+                              </p>
+                              
+                              {certificateStatus && (
+                                <div className="mt-3 p-2 bg-green-50 border border-green-200 rounded text-sm">
+                                  {certificateStatus}
+                                </div>
+                              )}
+                            </div>
+                            
+                            {/* Demo Certificate Buttons */}
+                            <div className="mt-4 space-y-3">
+                              <button
+                                onClick={async () => {
+                                  try {
+                                    setCertificateStatus('Creating demo educator certificate...');
+                                    
+                                    // Simulate certificate creation
+                                    await new Promise(resolve => setTimeout(resolve, 2000));
+                                    
+                                    const tokenId = Math.floor(Math.random() * 1000000).toString();
+                                    const txHash = '0x' + Math.random().toString(16).substr(2, 64);
+                                    
+                                    setCertificateStatus(`✅ Demo Educator Certificate Created!\nToken ID: ${tokenId}\nTransaction: ${txHash}\n\nThis is a demo certificate for presentation purposes.`);
+                                  } catch (error) {
+                                    setCertificateStatus(`❌ Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+                                  }
+                                }}
+                                className="w-full px-4 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+                              >
+                                🎓 Create Demo Educator Certificate
+                              </button>
+                              
+                              <button
+                                onClick={async () => {
+                                  try {
+                                    setCertificateStatus('Creating demo mission certificate...');
+                                    
+                                    // Simulate certificate creation
+                                    await new Promise(resolve => setTimeout(resolve, 2000));
+                                    
+                                    const tokenId = Math.floor(Math.random() * 1000000).toString();
+                                    const txHash = '0x' + Math.random().toString(16).substr(2, 64);
+                                    
+                                    setCertificateStatus(`✅ Demo Mission Certificate Created!\nToken ID: ${tokenId}\nTransaction: ${txHash}\n\nThis is a demo certificate for presentation purposes.`);
+                                  } catch (error) {
+                                    setCertificateStatus(`❌ Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+                                  }
+                                }}
+                                className="w-full px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                              >
+                                🏆 Create Demo Mission Certificate
+                              </button>
+                            </div>
                           </div>
                         )}
                       </div>

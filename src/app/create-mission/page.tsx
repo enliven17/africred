@@ -67,27 +67,78 @@ export default function CreateMissionPage() {
 
   useEffect(() => {
     const checkAccess = async () => {
+      console.log('=== CREATE MISSION ACCESS CHECK STARTED ===');
       setIsLoading(true);
+      
       try {
+        console.log('1. Checking if MetaMask is available...');
+        if (typeof (window as any).ethereum === 'undefined') {
+          console.log('❌ MetaMask not available');
+          setWalletConnected(false);
+          setIsVerifiedEducator(false);
+          setIsEducator(false);
+          setIsLoading(false);
+          return;
+        }
+        
+        console.log('2. MetaMask available, getting wallet state...');
         const walletState = await getWalletState();
+        console.log('3. Wallet state received:', walletState);
+        
+        // Always set wallet connected state first
         setWalletConnected(walletState.isConnected);
         setWalletAddress(walletState.address);
 
-        if (walletState.isConnected && walletState.address) {
-          // Check educator status on EduChain
-          const educatorStatus = await checkEducatorStatus(walletState.address);
-          setIsVerifiedEducator(educatorStatus.isVerified);
-          setIsEducator(educatorStatus.isVerified);
+        // If wallet is not connected, reset educator status immediately
+        if (!walletState.isConnected || !walletState.address) {
+          console.log('❌ Wallet not connected - resetting educator status');
+          setIsVerifiedEducator(false);
+          setIsEducator(false);
+          setIsLoading(false);
+          return;
         }
+
+        // Only check educator status if wallet is connected
+        console.log('✅ Wallet connected, checking educator status...');
+        const educatorStatus = await checkEducatorStatus(walletState.address);
+        console.log('4. Educator status received:', educatorStatus);
+        setIsVerifiedEducator(educatorStatus.isVerified);
+        setIsEducator(educatorStatus.isVerified);
+        
+        console.log('5. Final states set:', {
+          walletConnected: walletState.isConnected,
+          isVerifiedEducator: educatorStatus.isVerified,
+          isEducator: educatorStatus.isVerified
+        });
       } catch (error) {
-        console.error('Error checking access:', error);
+        console.error('❌ Error checking access:', error);
+        // Reset states on error
+        setWalletConnected(false);
+        setIsVerifiedEducator(false);
+        setIsEducator(false);
       } finally {
         setIsLoading(false);
+        console.log('=== CREATE MISSION ACCESS CHECK COMPLETED ===');
       }
     };
     
-    checkAccess();
-  }, []);
+    // Initial check with a longer delay to ensure MetaMask is ready
+    const timer = setTimeout(() => {
+      checkAccess();
+    }, 500);
+    
+    // Set up periodic checks to detect verification status changes
+    const interval = setInterval(() => {
+      if (walletConnected && walletAddress) {
+        checkAccess();
+      }
+    }, 10000); // Check every 10 seconds
+    
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
+  }, [walletConnected, walletAddress]);
 
   const addStep = () => {
     const newStep: Step = {
@@ -230,7 +281,7 @@ export default function CreateMissionPage() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Checking educator status...</p>
+          <p className="text-gray-600">Checking wallet connection...</p>
         </div>
       </div>
     );
@@ -249,6 +300,16 @@ export default function CreateMissionPage() {
             <p className="text-gray-600 mb-6">
               You need to connect your EduChain wallet to create educational missions.
             </p>
+            
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+              <p className="text-sm text-red-800">
+                <strong>Status:</strong> Wallet not connected. Please connect your wallet first.
+              </p>
+              <p className="text-xs text-red-600 mt-2">
+                Debug: walletConnected = {walletConnected.toString()}, address = {walletAddress || 'null'}
+              </p>
+            </div>
+
             <Link href="/" className="btn-primary">
               Connect Wallet
             </Link>
@@ -294,6 +355,8 @@ export default function CreateMissionPage() {
               </ul>
             </div>
 
+
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/profile">
                 <button className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2">
@@ -307,19 +370,35 @@ export default function CreateMissionPage() {
                 </button>
               </Link>
             </div>
+            
+            {/* Debug Information */}
+            <div className="mt-6 p-4 bg-gray-100 rounded-lg">
+              <p className="text-xs text-gray-600">
+                <strong>Debug Info:</strong><br/>
+                Wallet Connected: {walletConnected.toString()}<br/>
+                Address: {walletAddress || 'null'}<br/>
+                Is Educator: {isEducator.toString()}<br/>
+                Is Verified: {isVerifiedEducator.toString()}
+              </p>
+            </div>
 
             {/* Demo Button for Presentation */}
             <div className="mt-6 pt-6 border-t border-gray-200">
               <p className="text-xs text-gray-500 mb-3">Demo Mode (For Presentation)</p>
               <button 
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent any default behavior
+                  e.stopPropagation(); // Stop event bubbling
+                  
+                  console.log('Demo button clicked - setting verified educator to true');
                   setIsVerifiedEducator(true);
+                  
                   // Pre-fill demo data
-                  setMissionData({
+                  const demoData = {
                     title: 'Introduction to Blockchain Technology',
                     description: 'Learn the fundamentals of blockchain technology and its applications in education.',
                     category: 'Technology',
-                    difficulty: 'Medium',
+                    difficulty: 'Medium' as const,
                     estimatedTime: '2-3 hours',
                     maxReward: 150,
                     totalSteps: 3,
@@ -330,7 +409,7 @@ export default function CreateMissionPage() {
                         id: 1,
                         title: 'What is Blockchain?',
                         description: 'Understanding the basic concepts of blockchain technology',
-                        type: 'lesson',
+                        type: 'lesson' as const,
                         reward: 50,
                         timeEstimate: '45 min'
                       },
@@ -338,7 +417,7 @@ export default function CreateMissionPage() {
                         id: 2,
                         title: 'Blockchain Quiz',
                         description: 'Test your knowledge with interactive questions',
-                        type: 'quiz',
+                        type: 'quiz' as const,
                         reward: 50,
                         timeEstimate: '30 min'
                       },
@@ -346,13 +425,20 @@ export default function CreateMissionPage() {
                         id: 3,
                         title: 'Create Your First Smart Contract',
                         description: 'Hands-on practice with smart contract development',
-                        type: 'coding',
+                        type: 'coding' as const,
                         reward: 50,
                         timeEstimate: '60 min'
                       }
                     ]
-                  });
+                  };
+                  
+                  console.log('Setting demo data:', demoData);
+                  setMissionData(demoData);
+                  
+                  // Show success message
+                  alert('Demo mode activated! You can now create a mission.');
                 }}
+                type="button" // Explicitly set button type
                 className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm flex items-center gap-2 mx-auto"
               >
                 <Play className="w-3 h-3" />
