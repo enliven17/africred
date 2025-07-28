@@ -19,20 +19,20 @@ AfriCred is an "Earn-to-Learn" platform built on EduChain, designed for African 
 ### 🏆 **Reward System Design**
 The platform implements a comprehensive reward system where students earn EDU tokens through various educational activities:
 
-#### **Mission Completion Rewards**
-- **Easy Missions**: 25-50 EDU tokens
-- **Medium Missions**: 50-100 EDU tokens  
-- **Hard Missions**: 100-200 EDU tokens
+#### **Lesson Completion Rewards**
+- **Easy Lessons**: 25-50 EDU tokens
+- **Medium Lessons**: 50-100 EDU tokens  
+- **Hard Lessons**: 100-200 EDU tokens
 - **Bonus Rewards**: Additional tokens for perfect scores and fast completion
 
 #### **Achievement System**
-- **First Mission**: 25 EDU bonus
+- **First Lesson**: 25 EDU bonus
 - **Streak Bonuses**: 10-50 EDU for consecutive completions
 - **Special Achievements**: 100-500 EDU for milestone accomplishments
 - **Community Contributions**: 25-100 EDU for helping other students
 
 #### **Educator Rewards**
-- **Content Creation**: 100-500 EDU per approved mission
+- **Content Creation**: 100-500 EDU per approved lesson
 - **Student Engagement**: 10-25 EDU per student completion
 - **Quality Bonuses**: 200-1000 EDU for highly-rated content
 
@@ -58,22 +58,22 @@ The platform features a dual-token system for enhanced user experience:
 - **Transparency**: All conversions visible on blockchain explorer
 
 ### 🎮 **Gamification Elements**
-- **Level System**: Higher levels unlock more rewarding missions
+- **Level System**: Higher levels unlock more rewarding lessons
 - **Leaderboards**: Competitive rankings with EDU rewards
 - **Daily Challenges**: Bonus tokens for consistent participation
-- **Seasonal Events**: Special missions with increased rewards
+- **Seasonal Events**: Special lessons with increased rewards
 
 ## 🌍 Platform Features
 
 ### For Students:
-- **Earn while you learn** - Complete missions and earn crypto rewards
+- **Earn while you learn** - Complete lessons and earn crypto rewards
 - **Blockchain-verified certificates** - NFT-based educational credentials
 - **Progress tracking** - Monitor learning achievements and statistics
 - **Community engagement** - Connect with peers and educators
 - **Points accumulation** - Build learning points that convert to EDU tokens
 
 ### For Educators:
-- **Content creation** - Create educational missions and courses
+- **Content creation** - Create educational lessons and courses
 - **Blockchain credentials** - Issue verifiable certificates to students
 - **Monetization** - Earn rewards from student engagement
 - **Profile management** - Manage educator verification and statistics
@@ -93,7 +93,7 @@ The platform features a dual-token system for enhanced user experience:
 - **Supabase integration** - Planned for future versions (database and authentication)
 - **File management** - Storage for educational content
 - **User management** - Profile and progress tracking
-- **Mission system** - Educational content and progress management
+- **Lesson system** - Educational content and progress management
 - **Points tracking** - Learning points accumulation and conversion logic
 
 ### Blockchain (EduChain)
@@ -105,8 +105,8 @@ The platform features a dual-token system for enhanced user experience:
 
 ## 🎮 Core Features
 
-### 1. Mission System
-- **Educational missions** - Structured learning content
+### 1. Lesson System
+- **Educational lessons** - Structured learning content
 - **Progress tracking** - Real-time completion monitoring
 - **Scoring system** - Performance-based evaluation with points
 - **Achievement badges** - Recognition for completed tasks
@@ -115,7 +115,7 @@ The platform features a dual-token system for enhanced user experience:
 ### 2. Points & Reward System
 - **Learning Points (LP)** - Immediate reward feedback system
 - **Conversion mechanism** - Automated LP to EDU token conversion
-- **Reward tiers** - Different reward levels based on mission difficulty
+- **Reward tiers** - Different reward levels based on lesson difficulty
 - **Bonus systems** - Streak bonuses, perfect scores, and special achievements
 - **Real-time updates** - Instant points display and conversion tracking
 
@@ -236,7 +236,7 @@ npx hardhat run scripts/mint-demo-certificate.js --network edu-chain-testnet
 ## 🏆 Platform Capabilities
 
 ### Educational Features
-- Mission creation and management
+- Lesson creation and management
 - Student progress tracking
 - Achievement and reward systems
 - Certificate issuance and verification

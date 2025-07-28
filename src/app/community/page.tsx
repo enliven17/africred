@@ -38,7 +38,7 @@ export default function CommunityPage() {
         level: 5,
         country: 'Kenya'
       },
-      content: 'Just completed the Blockchain Basics mission! The smart contract exercise was challenging but very rewarding. Anyone else working on this?',
+      content: 'Just completed the Blockchain Basics lesson! The smart contract exercise was challenging but very rewarding. Anyone else working on this?',
       likes: 24,
       comments: 8,
       timeAgo: '2 hours ago',
@@ -66,7 +66,7 @@ export default function CommunityPage() {
         level: 7,
         country: 'Morocco'
       },
-      content: 'Looking for study partners for the Entrepreneurship Fundamentals mission. Anyone interested in forming a study group?',
+      content: 'Looking for study partners for the Entrepreneurship Fundamentals lesson. Anyone interested in forming a study group?',
       likes: 18,
       comments: 15,
       timeAgo: '6 hours ago',
@@ -97,7 +97,7 @@ export default function CommunityPage() {
       id: 1,
       user: 'Sarah M.',
       achievement: 'Blockchain Pioneer',
-      description: 'Completed 5 technology missions',
+      description: 'Completed 5 technology lessons',
       reward: 100,
       timeAgo: '1 hour ago'
     },
@@ -105,7 +105,7 @@ export default function CommunityPage() {
       id: 2,
       user: 'Kwame A.',
       achievement: 'History Scholar',
-      description: 'Completed 3 history missions',
+      description: 'Completed 3 history lessons',
       reward: 75,
       timeAgo: '3 hours ago'
     },
@@ -113,7 +113,7 @@ export default function CommunityPage() {
       id: 3,
       user: 'Fatima Z.',
       achievement: 'Language Master',
-      description: 'Completed 4 language missions',
+      description: 'Completed 4 language lessons',
       reward: 80,
       timeAgo: '5 hours ago'
     }

@@ -56,18 +56,14 @@ export default function Navbar() {
     try {
       const state = await connectWallet();
       
+      // Check if we're on the correct network
       if (!state.isCorrectNetwork) {
-        try {
-          await switchToEduChain(true);
-          // Re-check wallet state after network switch
-          await refreshWalletState();
-        } catch (networkError: any) {
-          console.error('Network switch failed:', networkError);
-          const helpMessage = getWalletConnectionHelp(networkError.message);
-          setConnectionError(`Connected to wallet but failed to switch to EduChain. ${helpMessage}`);
-          // Don't close modal if network switch fails
-          return;
-        }
+        setConnectionError(
+          'Wallet connected successfully! However, you need to switch to EduChain Testnet to use all features. ' +
+          'The network switch should happen automatically, but if you see this message, please switch manually in MetaMask.'
+        );
+        // Don't close modal, let user see the message
+        return;
       }
       
       // Close modal only if everything is successful
@@ -123,7 +119,7 @@ export default function Navbar() {
                     : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
                 }`}
               >
-                Missions
+                Lessons
               </Link>
               <Link 
                 href="/community"
@@ -134,6 +130,16 @@ export default function Navbar() {
                 }`}
               >
                 Community
+              </Link>
+              <Link 
+                href="/create-lesson"
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  isActive('/create-lesson') 
+                    ? 'text-blue-600 bg-blue-50 border border-blue-200' 
+                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                }`}
+              >
+                Create Lesson
               </Link>
               <Link 
                 href="/wallet"
@@ -234,10 +240,15 @@ export default function Navbar() {
               </div>
               <div className="mt-4 p-3 bg-blue-50 rounded-lg">
                 <p className="text-xs text-blue-700 mb-2">
-                  <strong>EduChain Testnet:</strong> Chain ID: 656476
+                  <strong>EduChain Testnet Network Details:</strong>
                 </p>
-                <p className="text-xs text-blue-600">
-                  Make sure you're connected to the correct network to earn EDU tokens
+                <div className="text-xs text-blue-600 space-y-1">
+                  <p>• <strong>Chain ID:</strong> 656476 (0xA0A4C)</p>
+                  <p>• <strong>Network Name:</strong> EDU Chain Testnet</p>
+                  <p>• <strong>Currency:</strong> EDU Token</p>
+                </div>
+                <p className="text-xs text-blue-600 mt-2">
+                  The network will be added to MetaMask automatically if not already present.
                 </p>
                 <a
                   href={getFaucetUrl()}

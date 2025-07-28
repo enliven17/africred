@@ -19,7 +19,7 @@ export default function Home() {
   const stats = [
     { label: 'Active Learners', value: '2,847', icon: Users, color: 'text-blue-500', change: '+12%' },
     { label: 'Total Rewards', value: '1,234 EDU', icon: Wallet, color: 'text-green-500', change: '+8%' },
-    { label: 'Completed Missions', value: '15,692', icon: Trophy, color: 'text-yellow-500', change: '+15%' },
+    { label: 'Completed Lessons', value: '15,692', icon: Trophy, color: 'text-yellow-500', change: '+15%' },
     { label: 'Success Rate', value: '94%', icon: TrendingUp, color: 'text-purple-500', change: '+2%' },
   ];
 
@@ -61,7 +61,7 @@ export default function Home() {
 
   const quickActions = [
     { title: 'Start Learning', icon: Play, color: 'bg-blue-500', href: '/missions' },
-    { title: 'View Missions', icon: BookOpen, color: 'bg-indigo-500', href: '/missions' },
+    { title: 'View Lessons', icon: BookOpen, color: 'bg-indigo-500', href: '/missions' },
     { title: 'Check Wallet', icon: Wallet, color: 'bg-green-500', href: '/wallet' },
     { title: 'Join Community', icon: Users, color: 'bg-purple-500', href: '/community' },
   ];
@@ -88,7 +88,7 @@ export default function Home() {
             </p>
             <p className="text-lg mb-12 text-blue-200 max-w-4xl mx-auto leading-relaxed">
               Learn, earn, and grow with Africa's educational platform built on blockchain. 
-              Complete missions, earn crypto rewards, and build your future with verifiable credentials.
+              Complete lessons, earn crypto rewards, and build your future with verifiable credentials.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/missions">
@@ -107,7 +107,7 @@ export default function Home() {
                   whileTap={{ scale: 0.95 }}
                   className="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 hover:bg-white hover:text-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer"
                 >
-                  Explore Missions
+                  Explore Lessons
                   <ArrowRight className="w-5 h-5" />
                 </motion.div>
               </Link>
@@ -196,10 +196,10 @@ export default function Home() {
             className="text-center mb-12"
           >
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-              Featured Missions
+              Featured Lessons
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Start your learning journey with these popular missions and earn rewards
+              Start your learning journey with these popular lessons and earn rewards
             </p>
           </motion.div>
 
@@ -249,7 +249,7 @@ export default function Home() {
                       whileTap={{ scale: 0.95 }}
                       className="w-full btn-primary text-center"
                     >
-                      Start Mission
+                      Start Lesson
                     </motion.div>
                   </Link>
                 </div>

@@ -1,5 +1,5 @@
-export interface MissionProgress {
-  missionId: number;
+export interface LessonProgress {
+  lessonId: number;
   isCompleted: boolean;
   currentStep: number;
   totalSteps: number;
@@ -14,8 +14,8 @@ export interface MissionProgress {
 
 export interface Certificate {
   id: string;
-  missionId: number;
-  missionTitle: string;
+  lessonId: number;
+  lessonTitle: string;
   issuedAt: string;
   score: number;
   maxScore: number;
@@ -26,8 +26,8 @@ export interface Certificate {
 
 export interface UserProgress {
   userId: string;
-  totalMissions: number;
-  completedMissions: number;
+  totalLessons: number;
+  completedLessons: number;
   totalScore: number;
   totalPoints: number;
   level: number;
@@ -52,8 +52,8 @@ export interface QuizAnswer {
   timeSpent: number;
 }
 
-export interface MissionSubmission {
-  missionId: number;
+export interface LessonSubmission {
+  lessonId: number;
   answers: QuizAnswer[];
   essayContent?: string;
   codeSubmission?: string;

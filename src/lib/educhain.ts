@@ -186,6 +186,32 @@ export const connectWallet = async (): Promise<WalletState> => {
     const config = getEduChainConfig(true); // Using testnet
     const isCorrectNetwork = chainId === config.chainId;
 
+    // If not on correct network, try to switch automatically
+    if (!isCorrectNetwork) {
+      try {
+        console.log('Switching to EduChain network...');
+        await switchToEduChain(true);
+        
+        // Wait a moment for the switch to complete
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Re-check chain ID after switch
+        const newChainId = await (window as any).ethereum.request({
+          method: 'eth_chainId',
+        });
+        
+        if (newChainId === config.chainId) {
+          console.log('Successfully switched to EduChain network');
+        } else {
+          console.warn('Network switch may not have completed successfully');
+        }
+      } catch (networkError: any) {
+        console.error('Failed to switch to EduChain network:', networkError);
+        // Don't throw error here, continue with connection but show warning
+        console.warn('Connected to wallet but on wrong network. User may need to switch manually.');
+      }
+    }
+
     // Get balance
     const balance = await (window as any).ethereum.request({
       method: 'eth_getBalance',
@@ -196,8 +222,8 @@ export const connectWallet = async (): Promise<WalletState> => {
       isConnected: true,
       address,
       balance: balance ? (parseInt(balance, 16) / Math.pow(10, 18)).toFixed(4) : '0',
-      chainId,
-      isCorrectNetwork,
+      chainId: await (window as any).ethereum.request({ method: 'eth_chainId' }), // Get updated chain ID
+      isCorrectNetwork: (await (window as any).ethereum.request({ method: 'eth_chainId' })) === config.chainId,
       explorerUrl: `${config.blockExplorerUrls[0]}/address/${address}`,
     };
 

@@ -27,7 +27,7 @@ import {
   Upload
 } from 'lucide-react';
 import { ProgressManager, PointsSystem } from '@/lib/certificates';
-import { MissionProgress, Certificate } from '@/types/missions';
+import { LessonProgress, Certificate } from '@/types/lessons';
 import { getWalletState, verifyEducator } from '@/lib/educhain';
 import { certificateService, CertificateData, EducatorCertificate } from '@/lib/educhain-certificates';
 import Link from 'next/link';
@@ -35,7 +35,7 @@ import Link from 'next/link';
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState('overview');
   const [isEditing, setIsEditing] = useState(false);
-  const [userProgress, setUserProgress] = useState<Record<string, MissionProgress>>({});
+  const [userProgress, setUserProgress] = useState<Record<string, LessonProgress>>({});
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [walletConnected, setWalletConnected] = useState(false);
   const [userRole, setUserRole] = useState<'student' | 'educator'>('student');
@@ -59,16 +59,16 @@ export default function ProfilePage() {
     joinDate: 'January 2024',
     level: 5,
     experience: 1250,
-    totalMissions: 12,
-    completedMissions: 8,
+    totalLessons: 12,
+    completedLessons: 8,
     totalScore: 850,
     totalPoints: 1200,
   };
 
   const achievements = [
-    { id: 1, title: 'First Mission', description: 'Completed your first learning mission', icon: Trophy, unlocked: true },
-    { id: 2, title: 'Quick Learner', description: 'Completed 5 missions in a week', icon: Star, unlocked: true },
-    { id: 3, title: 'Perfect Score', description: 'Achieved 100% on a mission', icon: Target, unlocked: false },
+    { id: 1, title: 'First Lesson', description: 'Completed your first learning lesson', icon: Trophy, unlocked: true },
+    { id: 2, title: 'Quick Learner', description: 'Completed 5 lessons in a week', icon: Star, unlocked: true },
+    { id: 3, title: 'Perfect Score', description: 'Achieved 100% on a lesson', icon: Target, unlocked: false },
     { id: 4, title: 'Community Helper', description: 'Helped 10 other learners', icon: Users, unlocked: false },
   ];
 
@@ -82,8 +82,8 @@ export default function ProfilePage() {
         {
           id: '1',
           tokenId: '1',
-          missionId: 'demo-1',
-          missionTitle: 'AfriCred Blockchain Education Certificate',
+          lessonId: 'demo-1',
+          lessonTitle: 'AfriCred Blockchain Education Certificate',
           issuedAt: new Date().toISOString(),
           percentage: 95,
           score: 95,
@@ -123,6 +123,35 @@ export default function ProfilePage() {
   };
 
   const levelProgress = getLevelProgress();
+
+  // Wallet bağlantısı kontrolü
+  if (!walletConnected) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">
+        <div className="max-w-md mx-auto text-center">
+          <div className="card-modern p-8">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <User className="w-8 h-8 text-blue-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Wallet Required</h2>
+            <p className="text-gray-600 mb-6">
+              You need to connect your EduChain wallet to view your profile and learning progress.
+            </p>
+            
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+              <p className="text-sm text-red-800">
+                <strong>Status:</strong> Wallet not connected. Please connect your wallet first.
+              </p>
+            </div>
+
+            <Link href="/" className="btn-primary">
+              Connect Wallet
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
@@ -234,11 +263,11 @@ export default function ProfilePage() {
                 {/* Stats */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="text-center p-4 bg-gray-50 rounded-xl">
-                    <div className="text-2xl font-bold text-gray-900">{user.totalMissions}</div>
-                    <div className="text-sm text-gray-600">Total Missions</div>
+                    <div className="text-2xl font-bold text-gray-900">{user.totalLessons}</div>
+                    <div className="text-sm text-gray-600">Total Lessons</div>
                   </div>
                   <div className="text-center p-4 bg-gray-50 rounded-xl">
-                    <div className="text-2xl font-bold text-green-600">{user.completedMissions}</div>
+                    <div className="text-2xl font-bold text-green-600">{user.completedLessons}</div>
                     <div className="text-sm text-gray-600">Completed</div>
                   </div>
                   <div className="text-center p-4 bg-gray-50 rounded-xl">
@@ -284,7 +313,7 @@ export default function ProfilePage() {
 
             {activeTab === 'progress' && (
               <div className="space-y-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Mission Progress</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Lesson Progress</h3>
                 <div className="space-y-4">
                   {Object.entries(userProgress).map(([missionId, progress]: [string, any]) => {
                     // Mission adlarını belirle
@@ -335,11 +364,11 @@ export default function ProfilePage() {
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Statistics</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="text-center p-4 bg-gray-50 rounded-xl">
-                      <div className="text-2xl font-bold text-gray-900">{user.totalMissions}</div>
-                      <div className="text-sm text-gray-600">Total Missions</div>
+                      <div className="text-2xl font-bold text-gray-900">{user.totalLessons}</div>
+                      <div className="text-sm text-gray-600">Total Lessons</div>
                     </div>
                     <div className="text-center p-4 bg-gray-50 rounded-xl">
-                      <div className="text-2xl font-bold text-green-600">{user.completedMissions}</div>
+                      <div className="text-2xl font-bold text-green-600">{user.completedLessons}</div>
                       <div className="text-sm text-gray-600">Completed</div>
                     </div>
                     <div className="text-center p-4 bg-gray-50 rounded-xl">
@@ -380,7 +409,7 @@ export default function ProfilePage() {
                         )}
                         <div className="flex items-center justify-between mb-4">
                           <div>
-                            <h4 className="font-semibold text-gray-900">{metadata?.name || certificate.missionTitle}</h4>
+                            <h4 className="font-semibold text-gray-900">{metadata?.name || certificate.lessonTitle}</h4>
                             <p className="text-sm text-gray-600">
                               {metadata?.description || `Issued on ${certificate.issuedAt ? new Date(certificate.issuedAt).toLocaleDateString() : ''}`}
                             </p>
