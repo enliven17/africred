@@ -74,13 +74,23 @@ export default function StepPage() {
           title: 'Understanding Check',
           questions: [
             {
-              question: 'What is the value of x in the equation 2x + 5 = 13?',
-              options: ['3', '4', '5', '6'],
-              correct: 1
+              question: 'Solve the quadratic equation: x² - 5x + 6 = 0',
+              options: ['x = 2, x = 3', 'x = -2, x = -3', 'x = 1, x = 6', 'x = -1, x = -6'],
+              correct: 0
             },
             {
-              question: 'Simplify: 3(x + 2) - 2x',
-              options: ['x + 6', 'x + 2', '3x + 6', 'x + 4'],
+              question: 'Find the derivative of f(x) = 3x³ - 2x² + 5x - 1',
+              options: ['9x² - 4x + 5', '6x² - 4x + 5', '9x² - 2x + 5', '6x² - 2x + 5'],
+              correct: 0
+            },
+            {
+              question: 'What is the limit of (x² - 4)/(x - 2) as x approaches 2?',
+              options: ['0', '2', '4', 'Undefined'],
+              correct: 2
+            },
+            {
+              question: 'Solve the system of equations: 2x + y = 7, 3x - 2y = 4',
+              options: ['x = 3, y = 1', 'x = 2, y = 3', 'x = 1, y = 5', 'x = 4, y = -1'],
               correct: 0
             }
           ]

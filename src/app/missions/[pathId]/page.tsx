@@ -77,13 +77,23 @@ export default function LearningPathPage() {
           type: 'quiz',
           questions: [
             {
-              question: 'What is the value of x in the equation 2x + 5 = 13?',
-              options: ['3', '4', '5', '6'],
-              correct: 1
+              question: 'Solve the quadratic equation: x² - 5x + 6 = 0',
+              options: ['x = 2, x = 3', 'x = -2, x = -3', 'x = 1, x = 6', 'x = -1, x = -6'],
+              correct: 0
             },
             {
-              question: 'Simplify: 3(x + 2) - 2x',
-              options: ['x + 6', 'x + 2', '3x + 6', 'x + 4'],
+              question: 'Find the derivative of f(x) = 3x³ - 2x² + 5x - 1',
+              options: ['9x² - 4x + 5', '6x² - 4x + 5', '9x² - 2x + 5', '6x² - 2x + 5'],
+              correct: 0
+            },
+            {
+              question: 'What is the limit of (x² - 4)/(x - 2) as x approaches 2?',
+              options: ['0', '2', '4', 'Undefined'],
+              correct: 2
+            },
+            {
+              question: 'Solve the system of equations: 2x + y = 7, 3x - 2y = 4',
+              options: ['x = 3, y = 1', 'x = 2, y = 3', 'x = 1, y = 5', 'x = 4, y = -1'],
               correct: 0
             }
           ]
@@ -156,18 +166,28 @@ export default function LearningPathPage() {
           type: 'assessment',
           questions: [
             {
-              question: 'Solve: 3x + 7 = 22',
-              options: ['3', '4', '5', '6'],
-              correct: 2
-            },
-            {
-              question: 'What is the area of a circle with radius 5?',
-              options: ['25π', '50π', '75π', '100π'],
+              question: 'Find the integral of ∫(2x³ - 3x² + 4x - 1)dx',
+              options: ['x⁴/2 - x³ + 2x² - x + C', 'x⁴ - x³ + 2x² - x + C', 'x⁴/2 - x³ + 4x² - x + C', 'x⁴ - x³ + 4x² - x + C'],
               correct: 0
             },
             {
-              question: 'Simplify: (2x + 3)(x - 1)',
-              options: ['2x² + x - 3', '2x² - x - 3', '2x² + x + 3', '2x² - x + 3'],
+              question: 'What is the volume of a sphere with radius 3?',
+              options: ['27π', '36π', '108π', '144π'],
+              correct: 1
+            },
+            {
+              question: 'Solve the differential equation: dy/dx = 2x + 1, y(0) = 3',
+              options: ['y = x² + x + 3', 'y = x² + x + 2', 'y = x² + 2x + 3', 'y = x² + 2x + 2'],
+              correct: 0
+            },
+            {
+              question: 'What is the probability of getting exactly 3 heads in 5 coin flips?',
+              options: ['5/32', '10/32', '15/32', '20/32'],
+              correct: 1
+            },
+            {
+              question: 'Find the eigenvalues of the matrix [[2, 1], [1, 2]]',
+              options: ['λ = 1, λ = 3', 'λ = 0, λ = 4', 'λ = 1, λ = 4', 'λ = 2, λ = 2'],
               correct: 0
             }
           ]
