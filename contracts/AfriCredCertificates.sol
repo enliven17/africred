@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
  * @title AfriCredCertificates
@@ -12,9 +11,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
  * @author AfriCred Team
  */
 contract AfriCredCertificates is ERC721, ERC721URIStorage, Ownable {
-    using Counters for Counters.Counter;
-    
-    Counters.Counter private _tokenIds;
+    uint256 private _tokenIds;
     
     // Certificate types
     enum CertificateType {
@@ -67,7 +64,7 @@ contract AfriCredCertificates is ERC721, ERC721URIStorage, Ownable {
      * @param studentName Name of the student
      * @param educatorAddress Address of the educator
      * @param certificateHash Hash of the certificate data
-     * @param tokenURI URI for the certificate metadata
+     * @param uri URI for the certificate metadata
      */
     function issueMissionCertificate(
         address student,
@@ -77,17 +74,17 @@ contract AfriCredCertificates is ERC721, ERC721URIStorage, Ownable {
         string memory studentName,
         string memory educatorAddress,
         string memory certificateHash,
-        string memory tokenURI
+        string memory uri
     ) public onlyOwner returns (uint256) {
         require(student != address(0), "Invalid student address");
         require(score <= maxScore, "Score cannot exceed max score");
         require(bytes(missionTitle).length > 0, "Mission title cannot be empty");
         
-        _tokenIds.increment();
-        uint256 newTokenId = _tokenIds.current();
+        _tokenIds++;
+        uint256 newTokenId = _tokenIds;
         
         _mint(student, newTokenId);
-        _setTokenURI(newTokenId, tokenURI);
+        _setTokenURI(newTokenId, uri);
         
         certificates[newTokenId] = CertificateMetadata({
             certType: CertificateType.MISSION_COMPLETION,
@@ -123,7 +120,7 @@ contract AfriCredCertificates is ERC721, ERC721URIStorage, Ownable {
      * @param experience Years of experience
      * @param expertise Areas of expertise
      * @param certificateHash Hash of the verification data
-     * @param tokenURI URI for the certificate metadata
+     * @param uri URI for the certificate metadata
      */
     function issueEducatorCertificate(
         address educator,
@@ -132,16 +129,16 @@ contract AfriCredCertificates is ERC721, ERC721URIStorage, Ownable {
         string memory experience,
         string memory expertise,
         string memory certificateHash,
-        string memory tokenURI
+        string memory uri
     ) public onlyOwner returns (uint256) {
         require(educator != address(0), "Invalid educator address");
         require(bytes(educatorName).length > 0, "Educator name cannot be empty");
         
-        _tokenIds.increment();
-        uint256 newTokenId = _tokenIds.current();
+        _tokenIds++;
+        uint256 newTokenId = _tokenIds;
         
         _mint(educator, newTokenId);
-        _setTokenURI(newTokenId, tokenURI);
+        _setTokenURI(newTokenId, uri);
         
         certificates[newTokenId] = CertificateMetadata({
             certType: CertificateType.EDUCATOR_VERIFICATION,
@@ -176,7 +173,7 @@ contract AfriCredCertificates is ERC721, ERC721URIStorage, Ownable {
      * @param recipientName Name of the recipient
      * @param description Achievement description
      * @param certificateHash Hash of the achievement data
-     * @param tokenURI URI for the certificate metadata
+     * @param uri URI for the certificate metadata
      */
     function issueAchievementCertificate(
         address recipient,
@@ -184,16 +181,16 @@ contract AfriCredCertificates is ERC721, ERC721URIStorage, Ownable {
         string memory recipientName,
         string memory description,
         string memory certificateHash,
-        string memory tokenURI
+        string memory uri
     ) public onlyOwner returns (uint256) {
         require(recipient != address(0), "Invalid recipient address");
         require(bytes(achievementTitle).length > 0, "Achievement title cannot be empty");
         
-        _tokenIds.increment();
-        uint256 newTokenId = _tokenIds.current();
+        _tokenIds++;
+        uint256 newTokenId = _tokenIds;
         
         _mint(recipient, newTokenId);
-        _setTokenURI(newTokenId, tokenURI);
+        _setTokenURI(newTokenId, uri);
         
         certificates[newTokenId] = CertificateMetadata({
             certType: CertificateType.ACHIEVEMENT,
@@ -226,7 +223,7 @@ contract AfriCredCertificates is ERC721, ERC721URIStorage, Ownable {
      * @param tokenId ID of the certificate to revoke
      */
     function revokeCertificate(uint256 tokenId) public onlyOwner {
-        require(_exists(tokenId), "Certificate does not exist");
+        require(ownerOf(tokenId) != address(0), "Certificate does not exist");
         require(!certificates[tokenId].isRevoked, "Certificate already revoked");
         
         certificates[tokenId].isRevoked = true;
@@ -240,7 +237,7 @@ contract AfriCredCertificates is ERC721, ERC721URIStorage, Ownable {
      * @param newURI New URI for the certificate metadata
      */
     function updateCertificateURI(uint256 tokenId, string memory newURI) public onlyOwner {
-        require(_exists(tokenId), "Certificate does not exist");
+        require(ownerOf(tokenId) != address(0), "Certificate does not exist");
         
         _setTokenURI(tokenId, newURI);
         
@@ -262,7 +259,7 @@ contract AfriCredCertificates is ERC721, ERC721URIStorage, Ownable {
      * @return Certificate metadata
      */
     function getCertificateMetadata(uint256 tokenId) public view returns (CertificateMetadata memory) {
-        require(_exists(tokenId), "Certificate does not exist");
+        require(ownerOf(tokenId) != address(0), "Certificate does not exist");
         return certificates[tokenId];
     }
     
@@ -272,7 +269,7 @@ contract AfriCredCertificates is ERC721, ERC721URIStorage, Ownable {
      * @return True if certificate is valid
      */
     function isCertificateValid(uint256 tokenId) public view returns (bool) {
-        require(_exists(tokenId), "Certificate does not exist");
+        require(ownerOf(tokenId) != address(0), "Certificate does not exist");
         return !certificates[tokenId].isRevoked;
     }
     
@@ -281,7 +278,7 @@ contract AfriCredCertificates is ERC721, ERC721URIStorage, Ownable {
      * @return Total number of certificates
      */
     function getTotalCertificates() public view returns (uint256) {
-        return _tokenIds.current();
+        return _tokenIds;
     }
     
     /**
@@ -294,10 +291,6 @@ contract AfriCredCertificates is ERC721, ERC721URIStorage, Ownable {
     }
     
     // Override required functions
-    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
-        super._burn(tokenId);
-    }
-    
     function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
     }

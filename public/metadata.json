@@ -1,0 +1,42 @@
+{
+  "name": "AfriCred Blockchain Education Certificate",
+  "description": "Certificate of completion for Blockchain Fundamentals and Smart Contract Development course on AfriCred platform. This certificate verifies successful completion of comprehensive blockchain education including Ethereum fundamentals, smart contract development, and decentralized application architecture.",
+  "image": "/ctf.avif",
+  "external_url": "https://africred.xyz/certificate/blockchain-fundamentals",
+  "attributes": [
+    {
+      "trait_type": "Course",
+      "value": "Blockchain Fundamentals & Smart Contract Development"
+    },
+    {
+      "trait_type": "Institution",
+      "value": "AfriCred Education Platform"
+    },
+    {
+      "trait_type": "Score",
+      "value": "95/100"
+    },
+    {
+      "trait_type": "Completion Date",
+      "value": "2024-01-15"
+    },
+    {
+      "trait_type": "Duration",
+      "value": "8 weeks"
+    },
+    {
+      "trait_type": "Level",
+      "value": "Intermediate"
+    },
+    {
+      "trait_type": "Blockchain",
+      "value": "Ethereum/EDUChain"
+    },
+    {
+      "trait_type": "Skills",
+      "value": "Solidity, Web3.js, Smart Contracts, DApp Development"
+    }
+  ],
+  "background_color": "000000",
+  "animation_url": ""
+} 
