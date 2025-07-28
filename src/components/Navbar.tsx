@@ -77,12 +77,12 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="bg-white/80 backdrop-blur-md border-b border-orange-100 sticky top-0 z-50">
+      <nav className="glass-effect border-b border-blue-100 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Link href="/" className="text-2xl font-bold text-orange-600 hover:text-orange-700 transition-colors">
+                <Link href="/" className="text-2xl font-bold gradient-text hover:opacity-80 transition-opacity">
                   AfriCred
                 </Link>
               </div>
@@ -90,46 +90,46 @@ export default function Navbar() {
             <div className="flex items-center space-x-4">
               <Link 
                 href="/missions"
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                   isActive('/missions') 
-                    ? 'text-orange-600 bg-orange-50' 
-                    : 'text-gray-600 hover:text-orange-600'
+                    ? 'text-blue-600 bg-blue-50 border border-blue-200' 
+                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
                 }`}
               >
                 Missions
               </Link>
               <Link 
                 href="/community"
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                   isActive('/community') 
-                    ? 'text-orange-600 bg-orange-50' 
-                    : 'text-gray-600 hover:text-orange-600'
+                    ? 'text-blue-600 bg-blue-50 border border-blue-200' 
+                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
                 }`}
               >
                 Community
               </Link>
               <Link 
                 href="/wallet"
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                   isActive('/wallet') 
-                    ? 'text-orange-600 bg-orange-50' 
-                    : 'text-gray-600 hover:text-orange-600'
+                    ? 'text-blue-600 bg-blue-50 border border-blue-200' 
+                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
                 }`}
               >
                 Wallet
               </Link>
               <Link 
                 href="/profile"
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                   isActive('/profile') 
-                    ? 'text-orange-600 bg-orange-50' 
-                    : 'text-gray-600 hover:text-orange-600'
+                    ? 'text-blue-600 bg-blue-50 border border-blue-200' 
+                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
                 }`}
               >
                 Profile
               </Link>
               {walletState.isConnected ? (
-                <div className="flex items-center space-x-2 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                <div className="flex items-center space-x-2 bg-green-50 border border-green-200 rounded-xl px-4 py-2">
                   <CheckCircle className="w-4 h-4 text-green-600" />
                   <span className="text-sm text-green-700 font-medium">
                     {walletState.address ? formatAddress(walletState.address) : ''}
@@ -145,7 +145,7 @@ export default function Navbar() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setShowWalletModal(true)}
-                  className="bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors flex items-center gap-2"
+                  className="btn-primary flex items-center gap-2 text-sm"
                 >
                   <LinkIcon className="w-4 h-4" />
                   Connect Wallet
@@ -165,8 +165,8 @@ export default function Navbar() {
             className="bg-white rounded-xl p-6 max-w-md w-full mx-4"
           >
             <div className="text-center">
-              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <LinkIcon className="w-8 h-8 text-orange-600" />
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <LinkIcon className="w-8 h-8 text-blue-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Connect to EduChain</h3>
               <p className="text-gray-600 mb-6">
@@ -176,7 +176,7 @@ export default function Navbar() {
                 <button
                   onClick={handleConnectWallet}
                   disabled={isConnecting}
-                  className="w-full bg-orange-500 text-white py-3 px-4 rounded-lg font-medium hover:bg-orange-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-blue-500 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Zap className="w-5 h-5" />
                   {isConnecting ? 'Connecting...' : 'Connect with MetaMask'}

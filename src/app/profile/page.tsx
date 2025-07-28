@@ -4,153 +4,64 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   User, 
-  Settings, 
-  LogOut, 
+  Mail, 
+  Phone, 
+  MapPin, 
+  Calendar, 
+  Edit, 
+  Save, 
+  X, 
   Trophy, 
   Star, 
-  TrendingUp,
-  Award,
-  BookOpen,
-  Calendar,
-  MapPin,
-  Mail,
-  Phone,
-  Edit,
-  Save,
-  X,
+  Target, 
+  TrendingUp, 
+  BookOpen, 
+  Award, 
+  Download, 
+  Share2,
   CheckCircle,
-  Target,
-  Zap
+  Clock,
+  Users,
+  Globe
 } from 'lucide-react';
-import { getWalletState, formatAddress } from '@/lib/educhain';
-import { WalletState, Achievement } from '@/types/blockchain';
 import { ProgressManager, PointsSystem } from '@/lib/certificates';
 import { MissionProgress, Certificate } from '@/types/missions';
 
 export default function ProfilePage() {
-  const [walletState, setWalletState] = useState<WalletState>({
-    isConnected: false,
-    address: null,
-    balance: null,
-    chainId: null,
-    isCorrectNetwork: false,
-  });
+  const [activeTab, setActiveTab] = useState('overview');
   const [isEditing, setIsEditing] = useState(false);
-  const [selectedTab, setSelectedTab] = useState('overview');
-  const [userProgress, setUserProgress] = useState<Record<number, MissionProgress>>({});
+  const [userProgress, setUserProgress] = useState<Record<string, MissionProgress>>({});
   const [certificates, setCertificates] = useState<Certificate[]>([]);
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: User },
-    { id: 'achievements', label: 'Achievements', icon: Trophy },
-    { id: 'certificates', label: 'Certificates', icon: Award },
     { id: 'progress', label: 'Progress', icon: TrendingUp },
-    { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'certificates', label: 'Certificates', icon: Award },
+    { id: 'settings', label: 'Settings', icon: Edit },
   ];
 
-  const userProfile = {
-    name: 'Sarah M.',
-    email: 'sarah@example.com',
-    phone: '+254 700 123 456',
-    country: 'Kenya',
-    city: 'Nairobi',
-    joinDate: '2024-01-15',
+  const user = {
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    phone: '+234 123 456 7890',
+    location: 'Lagos, Nigeria',
+    joinDate: 'January 2024',
     level: 5,
     experience: 1250,
-    totalRewards: 455,
-    completedMissions: 12,
-    avatar: '/api/placeholder/100/100'
+    totalMissions: 12,
+    completedMissions: 8,
+    totalScore: 850,
+    totalPoints: 1200,
   };
 
-  const achievements: Achievement[] = [
-    {
-      id: '1',
-      title: 'First Steps',
-      description: 'Complete your first mission',
-      icon: '🎯',
-      isUnlocked: true,
-      unlockDate: Date.now() - 86400000 * 30,
-      reward: 25
-    },
-    {
-      id: '2',
-      title: 'Mathematics Master',
-      description: 'Complete 5 mathematics missions',
-      icon: '📐',
-      isUnlocked: true,
-      unlockDate: Date.now() - 86400000 * 15,
-      reward: 100
-    },
-    {
-      id: '3',
-      title: 'History Scholar',
-      description: 'Complete 3 history missions',
-      icon: '📚',
-      isUnlocked: true,
-      unlockDate: Date.now() - 86400000 * 7,
-      reward: 75
-    },
-    {
-      id: '4',
-      title: 'Blockchain Pioneer',
-      description: 'Complete 5 technology missions',
-      icon: '⛓️',
-      isUnlocked: false,
-      reward: 150
-    },
-    {
-      id: '5',
-      title: 'Community Leader',
-      description: 'Help 10 other learners',
-      icon: '🤝',
-      isUnlocked: false,
-      reward: 200
-    },
-    {
-      id: '6',
-      title: 'Perfect Score',
-      description: 'Get 100% on 3 missions',
-      icon: '🏆',
-      isUnlocked: false,
-      reward: 300
-    }
-  ];
-
-  const recentMissions = [
-    {
-      id: 1,
-      title: 'Learn Basic Mathematics',
-      completedDate: '2024-01-20',
-      score: 95,
-      reward: 50
-    },
-    {
-      id: 2,
-      title: 'African History Quiz',
-      completedDate: '2024-01-18',
-      score: 88,
-      reward: 75
-    },
-    {
-      id: 3,
-      title: 'Swahili Language Learning',
-      completedDate: '2024-01-15',
-      score: 92,
-      reward: 60
-    }
-  ];
-
-  const stats = [
-    { label: 'Level', value: userProfile.level, icon: Star, color: 'text-yellow-500' },
-    { label: 'Experience', value: userProfile.experience, icon: TrendingUp, color: 'text-blue-500' },
-    { label: 'Total Rewards', value: `₿ ${userProfile.totalRewards}`, icon: Award, color: 'text-green-500' },
-    { label: 'Missions Completed', value: userProfile.completedMissions, icon: BookOpen, color: 'text-purple-500' },
+  const achievements = [
+    { id: 1, title: 'First Mission', description: 'Completed your first learning mission', icon: Trophy, unlocked: true },
+    { id: 2, title: 'Quick Learner', description: 'Completed 5 missions in a week', icon: Star, unlocked: true },
+    { id: 3, title: 'Perfect Score', description: 'Achieved 100% on a mission', icon: Target, unlocked: false },
+    { id: 4, title: 'Community Helper', description: 'Helped 10 other learners', icon: Users, unlocked: false },
   ];
 
   useEffect(() => {
-    checkWalletState();
-    
-    // Load user progress and certificates
     const progress = ProgressManager.getAllProgress();
     setUserProgress(progress);
     
@@ -164,36 +75,17 @@ export default function ProfilePage() {
     setCertificates(allCertificates);
   }, []);
 
-  const checkWalletState = async () => {
-    try {
-      const state = await getWalletState();
-      setWalletState(state);
-    } catch (error) {
-      console.error('Failed to check wallet state:', error);
-    }
+  const getLevelProgress = () => {
+    const { current, next, percentage } = PointsSystem.getLevelProgress(user.experience);
+    return { current, next, percentage };
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
-  const getProgressPercentage = () => {
-    const currentLevel = userProfile.level;
-    const currentExp = userProfile.experience;
-    const expForNextLevel = currentLevel * 1000;
-    const expForCurrentLevel = (currentLevel - 1) * 1000;
-    const progress = ((currentExp - expForCurrentLevel) / (expForNextLevel - expForCurrentLevel)) * 100;
-    return Math.min(progress, 100);
-  };
+  const levelProgress = getLevelProgress();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-16">
+      <div className="gradient-bg text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -201,378 +93,299 @@ export default function ProfilePage() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-2xl md:text-3xl font-bold mb-4">
               My Profile
             </h1>
-            <p className="text-xl text-orange-100 max-w-2xl mx-auto">
-              Track your learning progress, achievements, and personal information
+            <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+              Track your learning journey, achievements, and blockchain-verified certificates
             </p>
           </motion.div>
         </div>
       </div>
 
-      {/* Profile Header */}
-      <section className="py-8 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <div className="flex items-start justify-between mb-6">
-              <div className="flex items-center gap-6">
-                <div className="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center">
-                  <span className="text-3xl font-bold text-orange-600">
-                    {userProfile.name.charAt(0)}
+      {/* Profile Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Profile Card */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-8">
+              <div className="text-center mb-6">
+                <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-3xl font-bold text-blue-600">
+                    {user.name.charAt(0)}
                   </span>
                 </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">{userProfile.name}</h2>
-                  <div className="flex items-center gap-4 text-sm text-gray-600">
-                    <span className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4" />
-                      {userProfile.city}, {userProfile.country}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      Joined {formatDate(userProfile.joinDate)}
-                    </span>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">{user.name}</h2>
+                <p className="text-gray-600 mb-4">Level {user.level} Learner</p>
+                
+                {/* Level Progress */}
+                <div className="mb-4">
+                  <div className="flex justify-between text-sm text-gray-600 mb-1">
+                    <span>Level {levelProgress.current}</span>
+                    <span>Level {levelProgress.next}</span>
                   </div>
-                  {walletState.address && (
-                    <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
-                      <span className="font-mono">{formatAddress(walletState.address)}</span>
-                    </div>
-                  )}
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${levelProgress.percentage}%` }}
+                    ></div>
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {user.experience} XP / {levelProgress.next * 200} XP
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setIsEditing(!isEditing)}
+                  className="flex items-center gap-2 mx-auto px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  {isEditing ? <X className="w-4 h-4" /> : <Edit className="w-4 h-4" />}
+                  {isEditing ? 'Cancel' : 'Edit Profile'}
+                </button>
+              </div>
+
+              {/* Profile Info */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <Mail className="w-5 h-5 text-gray-400" />
+                  <span className="text-gray-700">{user.email}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Phone className="w-5 h-5 text-gray-400" />
+                  <span className="text-gray-700">{user.phone}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <MapPin className="w-5 h-5 text-gray-400" />
+                  <span className="text-gray-700">{user.location}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Calendar className="w-5 h-5 text-gray-400" />
+                  <span className="text-gray-700">Joined {user.joinDate}</span>
                 </div>
               </div>
-              <button
-                onClick={() => setIsEditing(!isEditing)}
-                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-              >
-                {isEditing ? <X className="w-4 h-4" /> : <Edit className="w-4 h-4" />}
-                {isEditing ? 'Cancel' : 'Edit Profile'}
-              </button>
-            </div>
-
-            {/* Level Progress */}
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">Level {userProfile.level}</span>
-                <span className="text-sm text-gray-500">{userProfile.experience} / {userProfile.level * 1000} XP</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className="bg-gradient-to-r from-orange-500 to-orange-600 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${getProgressPercentage()}%` }}
-                ></div>
-              </div>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: index * 0.1 }}
-                  className="text-center bg-gray-50 rounded-lg p-4"
-                >
-                  <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 mb-2 ${stat.color}`}>
-                    <stat.icon className="w-5 h-5" />
-                  </div>
-                  <div className="text-lg font-bold text-gray-900">{stat.value}</div>
-                  <div className="text-sm text-gray-600">{stat.label}</div>
-                </motion.div>
-              ))}
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Tabs */}
-      <section className="py-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-2 mb-8">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setSelectedTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
-                  selectedTab === tab.id
-                    ? 'bg-orange-500 text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                <tab.icon className="w-4 h-4" />
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Tab Content */}
-          {selectedTab === 'overview' && (
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Recent Missions */}
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Missions</h3>
-                <div className="space-y-3">
-                  {recentMissions.map((mission, index) => (
-                    <motion.div
-                      key={mission.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.8, delay: index * 0.1 }}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                    >
-                      <div>
-                        <div className="font-medium text-gray-900">{mission.title}</div>
-                        <div className="text-sm text-gray-500">{mission.completedDate}</div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm font-medium text-gray-900">{mission.score}%</div>
-                        <div className="text-xs text-green-600">+{mission.reward} EDU</div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+          {/* Main Content */}
+          <div className="lg:col-span-2">
+            {/* Tabs */}
+            <div className="bg-white rounded-2xl shadow-lg mb-8">
+              <div className="flex border-b border-gray-100">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center gap-2 px-6 py-4 font-medium transition-colors ${
+                      activeTab === tab.id
+                        ? 'bg-blue-500 text-white'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    }`}
+                  >
+                    <tab.icon className="w-4 h-4" />
+                    {tab.label}
+                  </button>
+                ))}
               </div>
 
-              {/* Quick Actions */}
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
-                <div className="space-y-3">
-                  <button className="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <BookOpen className="w-5 h-5 text-blue-600" />
+              {/* Tab Content */}
+              <div className="p-6">
+                {activeTab === 'overview' && (
+                  <div className="space-y-6">
+                    {/* Stats */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="text-center p-4 bg-gray-50 rounded-xl">
+                        <div className="text-2xl font-bold text-gray-900">{user.totalMissions}</div>
+                        <div className="text-sm text-gray-600">Total Missions</div>
                       </div>
-                      <div className="text-left">
-                        <div className="font-medium text-gray-900">Continue Learning</div>
-                        <div className="text-sm text-gray-500">Pick up where you left off</div>
+                      <div className="text-center p-4 bg-gray-50 rounded-xl">
+                        <div className="text-2xl font-bold text-green-600">{user.completedMissions}</div>
+                        <div className="text-sm text-gray-600">Completed</div>
                       </div>
-                    </div>
-                    <Zap className="w-4 h-4 text-gray-400" />
-                  </button>
-                  <button className="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                        <Trophy className="w-5 h-5 text-green-600" />
+                      <div className="text-center p-4 bg-gray-50 rounded-xl">
+                        <div className="text-2xl font-bold text-blue-600">{user.totalScore}</div>
+                        <div className="text-sm text-gray-600">Total Score</div>
                       </div>
-                      <div className="text-left">
-                        <div className="font-medium text-gray-900">View Achievements</div>
-                        <div className="text-sm text-gray-500">See your badges and rewards</div>
+                      <div className="text-center p-4 bg-gray-50 rounded-xl">
+                        <div className="text-2xl font-bold text-purple-600">{certificates.length}</div>
+                        <div className="text-sm text-gray-600">Certificates</div>
                       </div>
                     </div>
-                    <Zap className="w-4 h-4 text-gray-400" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
 
-          {selectedTab === 'achievements' && (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {achievements.map((achievement, index) => (
-                <motion.div
-                  key={achievement.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: index * 0.1 }}
-                  className={`bg-white rounded-xl p-6 shadow-sm border border-gray-100 ${
-                    achievement.isUnlocked ? '' : 'opacity-60'
-                  }`}
-                >
-                  <div className="text-center">
-                    <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-2xl ${
-                      achievement.isUnlocked ? 'bg-yellow-100' : 'bg-gray-100'
-                    }`}>
-                      {achievement.icon}
-                    </div>
-                    <h4 className="font-semibold text-gray-900 mb-2">{achievement.title}</h4>
-                    <p className="text-gray-600 mb-3">{achievement.description}</p>
-                    <div className="flex items-center justify-center gap-2">
-                      <Award className="w-4 h-4 text-green-500" />
-                      <span className="text-sm font-medium text-green-600">{achievement.reward} credits</span>
-                    </div>
-                    {achievement.isUnlocked && (
-                      <div className="mt-3 flex items-center justify-center gap-1 text-sm text-green-600">
-                        <CheckCircle className="w-4 h-4" />
-                        Unlocked
+                    {/* Achievements */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">Achievements</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {achievements.map((achievement) => (
+                          <div
+                            key={achievement.id}
+                            className={`p-4 rounded-xl border-2 ${
+                              achievement.unlocked
+                                ? 'border-green-200 bg-green-50'
+                                : 'border-gray-200 bg-gray-50'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                                achievement.unlocked ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'
+                              }`}>
+                                <achievement.icon className="w-5 h-5" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900">{achievement.title}</div>
+                                <div className="text-sm text-gray-600">{achievement.description}</div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    )}
+                    </div>
                   </div>
-                </motion.div>
-              ))}
-            </div>
-          )}
+                )}
 
-          {selectedTab === 'certificates' && (
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">EduChain Certificates</h3>
-              {certificates.length === 0 ? (
-                <div className="text-center py-12">
-                  <Award className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h4 className="text-lg font-medium text-gray-900 mb-2">No Certificates Yet</h4>
-                  <p className="text-gray-600 mb-4">Complete missions to earn blockchain-verified certificates!</p>
-                  <button className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
-                    Start Learning
-                  </button>
-                </div>
-              ) : (
-                <div className="grid md:grid-cols-2 gap-6">
-                  {certificates.map((certificate, index) => (
-                    <motion.div
-                      key={certificate.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                          <Award className="w-5 h-5 text-yellow-500" />
-                          <h4 className="font-medium text-gray-900">{certificate.missionTitle}</h4>
-                        </div>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          certificate.percentage >= 90 ? 'bg-green-100 text-green-800' :
-                          certificate.percentage >= 70 ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-red-100 text-red-800'
-                        }`}>
-                          {certificate.percentage}%
-                        </span>
-                      </div>
-                      
-                      <div className="space-y-2 text-sm text-gray-600 mb-4">
-                        <div className="flex justify-between">
-                          <span>Score:</span>
-                          <span className="font-medium">{certificate.score}/{certificate.maxScore}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Issued:</span>
-                          <span>{new Date(certificate.issuedAt).toLocaleDateString()}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Token ID:</span>
-                          <span className="font-mono text-xs">{certificate.nftTokenId}</span>
-                        </div>
-                      </div>
-
-                      <div className="flex gap-2">
-                        <button className="flex-1 px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm">
-                          Download
-                        </button>
-                        <button className="flex-1 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm">
-                          Verify
-                        </button>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-
-          {selectedTab === 'progress' && (
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">Learning Progress</h3>
-              <div className="grid md:grid-cols-2 gap-8">
-                <div>
-                  <h4 className="font-medium text-gray-900 mb-4">Mission Progress</h4>
-                  <div className="space-y-3">
-                    {Object.entries(userProgress).map(([missionId, progress]: [string, any]) => (
-                      <div key={missionId} className="flex items-center justify-between">
-                        <span className="text-gray-700 text-sm">Mission {missionId}</span>
-                        <div className="flex items-center gap-2">
-                          <div className="w-24 bg-gray-200 rounded-full h-2">
+                {activeTab === 'progress' && (
+                  <div className="space-y-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Mission Progress</h3>
+                    <div className="space-y-4">
+                      {Object.entries(userProgress).map(([missionId, progress]: [string, any]) => (
+                        <div key={missionId} className="p-4 border border-gray-200 rounded-xl">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-medium text-gray-900">Mission {progress.missionId}</span>
+                            <span className="text-sm text-gray-600">
+                              {progress.score}/{progress.maxScore}
+                            </span>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
                             <div 
-                              className="bg-orange-500 h-2 rounded-full"
+                              className="bg-blue-500 h-2 rounded-full"
                               style={{ width: `${(progress.score / progress.maxScore) * 100}%` }}
                             ></div>
                           </div>
-                          <span className="text-sm text-gray-500 w-12 text-right">
-                            {progress.score}/{progress.maxScore}
-                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-8">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">Statistics</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="text-center p-4 bg-gray-50 rounded-xl">
+                          <div className="text-2xl font-bold text-gray-900">{user.totalMissions}</div>
+                          <div className="text-sm text-gray-600">Total Missions</div>
+                        </div>
+                        <div className="text-center p-4 bg-gray-50 rounded-xl">
+                          <div className="text-2xl font-bold text-green-600">{user.completedMissions}</div>
+                          <div className="text-sm text-gray-600">Completed</div>
+                        </div>
+                        <div className="text-center p-4 bg-gray-50 rounded-xl">
+                          <div className="text-2xl font-bold text-blue-600">{user.totalScore}</div>
+                          <div className="text-sm text-gray-600">Total Score</div>
+                        </div>
+                        <div className="text-center p-4 bg-gray-50 rounded-xl">
+                          <div className="text-2xl font-bold text-purple-600">{certificates.length}</div>
+                          <div className="text-sm text-gray-600">Certificates</div>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <h4 className="font-medium text-gray-900 mb-4">Statistics</h4>
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-gray-700">Total Missions:</span>
-                      <span className="font-medium">{Object.keys(userProgress).length}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-700">Completed:</span>
-                      <span className="font-medium">{Object.values(userProgress).filter((p: any) => p.isCompleted).length}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-700">Total Score:</span>
-                      <span className="font-medium">{Object.values(userProgress).reduce((acc: number, p: any) => acc + p.score, 0)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-700">Certificates:</span>
-                      <span className="font-medium">{certificates.length}</span>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          )}
+                )}
 
-          {selectedTab === 'settings' && (
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">Account Settings</h3>
-              <div className="space-y-6">
-                <div>
-                  <h4 className="font-medium text-gray-900 mb-4">Personal Information</h4>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                      <input
-                        type="text"
-                        defaultValue={userProfile.name}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                      <input
-                        type="email"
-                        defaultValue={userProfile.email}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
-                      <input
-                        type="tel"
-                        defaultValue={userProfile.phone}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Country</label>
-                      <input
-                        type="text"
-                        defaultValue={userProfile.country}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                      />
+                {activeTab === 'certificates' && (
+                  <div className="space-y-6">
+                    {certificates.length === 0 ? (
+                      <div className="text-center py-12">
+                        <Award className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2">No Certificates Yet</h3>
+                        <p className="text-gray-600 mb-4">Complete your first learning mission to earn a blockchain-verified certificate!</p>
+                        <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                          Start Learning
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {certificates.map((certificate, index) => (
+                          <motion.div
+                            key={certificate.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: index * 0.1 }}
+                            className="p-6 border border-gray-200 rounded-xl hover:shadow-lg transition-shadow"
+                          >
+                            <div className="flex items-center justify-between mb-4">
+                              <div>
+                                <h4 className="font-semibold text-gray-900">{certificate.missionTitle}</h4>
+                                <p className="text-sm text-gray-600">Issued on {new Date(certificate.issuedAt).toLocaleDateString()}</p>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-2xl font-bold text-blue-600">{certificate.percentage}%</div>
+                                <div className="text-sm text-gray-600">{certificate.score}/{certificate.maxScore}</div>
+                              </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <div className="text-sm text-gray-600">
+                                Token ID: {certificate.nftTokenId}
+                              </div>
+                              <div className="flex gap-2">
+                                <button className="px-3 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors">
+                                  <Download className="w-4 h-4" />
+                                </button>
+                                <button className="px-3 py-1 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors">
+                                  <Share2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'settings' && (
+                  <div className="space-y-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Profile Settings</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                        <input
+                          type="text"
+                          defaultValue={user.name}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input
+                          type="email"
+                          defaultValue={user.email}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                        <input
+                          type="tel"
+                          defaultValue={user.phone}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                        <input
+                          type="text"
+                          defaultValue={user.location}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                      <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                        Save Changes
+                      </button>
                     </div>
                   </div>
-                </div>
-                <div className="flex justify-end gap-3">
-                  <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-                    Cancel
-                  </button>
-                  <button className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
-                    Save Changes
-                  </button>
-                </div>
+                )}
               </div>
             </div>
-          )}
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 } 

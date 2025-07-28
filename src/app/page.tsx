@@ -60,18 +60,18 @@ export default function Home() {
   ];
 
   const quickActions = [
-    { title: 'Start Learning', icon: Play, color: 'bg-orange-500', href: '/missions' },
-    { title: 'View Missions', icon: BookOpen, color: 'bg-blue-500', href: '/missions' },
+    { title: 'Start Learning', icon: Play, color: 'bg-blue-500', href: '/missions' },
+    { title: 'View Missions', icon: BookOpen, color: 'bg-indigo-500', href: '/missions' },
     { title: 'Check Wallet', icon: Wallet, color: 'bg-green-500', href: '/wallet' },
     { title: 'Join Community', icon: Users, color: 'bg-purple-500', href: '/community' },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
 
 
       {/* Header */}
-      <header className="relative overflow-hidden bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+      <header className="relative overflow-hidden gradient-bg text-white">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <motion.div
@@ -80,13 +80,13 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-5xl md:text-7xl font-bold mb-6">
-              Welcome to <span className="text-yellow-300">AfriCred</span>
+            <h1 className="text-3xl md:text-4xl font-bold mb-6">
+              Welcome to <span className="gradient-text">AfriCred</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-orange-100">
+            <p className="text-xl md:text-2xl mb-8 text-blue-100">
               Africa's First Earn-to-Learn Platform on EduChain
             </p>
-            <p className="text-lg mb-12 text-orange-200 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-lg mb-12 text-blue-200 max-w-4xl mx-auto leading-relaxed">
               Learn, earn, and grow with Africa's revolutionary educational platform built on blockchain. 
               Complete missions, earn crypto rewards, and build your future with verifiable credentials.
             </p>
@@ -95,7 +95,7 @@ export default function Home() {
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="bg-yellow-400 text-orange-900 px-8 py-4 rounded-lg font-semibold text-lg flex items-center justify-center gap-2 hover:bg-yellow-300 transition-colors cursor-pointer"
+                  className="bg-yellow-400 text-blue-900 px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 hover:bg-yellow-300 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer"
                 >
                   <Play className="w-5 h-5" />
                   Start Learning
@@ -105,7 +105,7 @@ export default function Home() {
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg flex items-center justify-center gap-2 hover:bg-white hover:text-orange-600 transition-colors cursor-pointer"
+                  className="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 hover:bg-white hover:text-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer"
                 >
                   Explore Missions
                   <ArrowRight className="w-5 h-5" />
@@ -132,9 +132,9 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: index * 0.1 }}
                   whileHover={{ y: -5 }}
-                  className="bg-white border border-gray-200 rounded-xl p-6 text-center hover:shadow-lg transition-all duration-300 hover:border-orange-200 cursor-pointer"
+                  className="card-modern p-6 text-center cursor-pointer"
                 >
-                  <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg ${action.color} mb-4`}>
+                  <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${action.color} mb-4`}>
                     <action.icon className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="font-semibold text-gray-900">{action.title}</h3>
@@ -154,7 +154,7 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
               Platform Statistics
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-4">
@@ -195,7 +195,7 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
               Featured Missions
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -211,7 +211,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.1 }}
                 whileHover={{ y: -5 }}
-                className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100"
+                className="card-modern overflow-hidden"
               >
                 <div className={`h-2 ${mission.color}`}></div>
                 <div className="p-6">
@@ -244,7 +244,7 @@ export default function Home() {
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="w-full bg-orange-500 text-white py-3 px-4 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors cursor-pointer text-center"
+                      className="w-full btn-primary text-center"
                     >
                       Start Mission
                     </motion.div>
@@ -257,24 +257,24 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+      <section className="py-16 gradient-bg text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">
               Ready to Start Your Learning Journey?
             </h2>
-            <p className="text-xl mb-8 text-orange-100 max-w-2xl mx-auto">
+            <p className="text-xl mb-8 text-blue-100 max-w-2xl mx-auto">
               Join thousands of learners across Africa who are already earning while they learn
             </p>
             <Link href="/missions">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-yellow-400 text-orange-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-yellow-300 transition-colors cursor-pointer"
+                className="bg-yellow-400 text-blue-900 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-yellow-300 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer"
               >
                 Get Started Now
               </motion.div>

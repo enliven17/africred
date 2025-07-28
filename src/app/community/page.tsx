@@ -114,13 +114,13 @@ export default function CommunityPage() {
     { label: 'Active Members', value: '2,847', icon: Users, color: 'text-blue-500' },
     { label: 'Total Posts', value: '15,692', icon: MessageCircle, color: 'text-green-500' },
     { label: 'Countries', value: '32', icon: Globe, color: 'text-purple-500' },
-    { label: 'Study Groups', value: '156', icon: UserPlus, color: 'text-orange-500' },
+    { label: 'Study Groups', value: '156', icon: UserPlus, color: 'text-blue-500' },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-16">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    {/* Header */}
+    <div className="gradient-bg text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -128,10 +128,10 @@ export default function CommunityPage() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-2xl md:text-3xl font-bold mb-4">
               AfriCred Community
             </h1>
-            <p className="text-xl text-orange-100 max-w-2xl mx-auto">
+            <p className="text-xl text-blue-100 max-w-2xl mx-auto">
               Connect with learners across Africa, share your achievements, and grow together
             </p>
           </motion.div>
@@ -173,30 +173,30 @@ export default function CommunityPage() {
           <div className="bg-white rounded-xl p-6 shadow-sm">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Share Your Learning Journey</h3>
             <div className="flex gap-4">
-              <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-                <span className="text-orange-600 font-semibold">U</span>
+                              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <span className="text-blue-600 font-semibold">U</span>
               </div>
               <div className="flex-1">
                 <textarea
                   value={newPost}
                   onChange={(e) => setNewPost(e.target.value)}
                   placeholder="What have you learned today? Share your achievements, ask questions, or connect with other learners..."
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                   rows={3}
                 />
                 <div className="flex items-center justify-between mt-3">
                   <div className="flex gap-2">
-                    <button className="text-gray-500 hover:text-orange-600 p-2 rounded-lg hover:bg-orange-50">
+                    <button className="text-gray-500 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50">
                       <BookOpen className="w-4 h-4" />
                     </button>
-                    <button className="text-gray-500 hover:text-orange-600 p-2 rounded-lg hover:bg-orange-50">
+                    <button className="text-gray-500 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50">
                       <Award className="w-4 h-4" />
                     </button>
                   </div>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="bg-orange-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors flex items-center gap-2"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-colors flex items-center gap-2"
                   >
                     <Send className="w-4 h-4" />
                     Post
@@ -218,7 +218,7 @@ export default function CommunityPage() {
                 onClick={() => setSelectedTab(tab.id)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                   selectedTab === tab.id
-                    ? 'bg-orange-500 text-white'
+                    ? 'bg-blue-500 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -240,8 +240,8 @@ export default function CommunityPage() {
                   className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                      <span className="text-orange-600 font-semibold">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                      <span className="text-blue-600 font-semibold">
                         {discussion.author.name.charAt(0)}
                       </span>
                     </div>
@@ -276,7 +276,7 @@ export default function CommunityPage() {
                         {discussion.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full"
+                            className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
                           >
                             #{tag}
                           </span>
@@ -337,7 +337,7 @@ export default function CommunityPage() {
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
                         user.rank === 1 ? 'bg-yellow-500' :
                         user.rank === 2 ? 'bg-gray-400' :
-                        user.rank === 3 ? 'bg-orange-500' : 'bg-gray-300'
+                        user.rank === 3 ? 'bg-blue-500' : 'bg-gray-300'
                       }`}>
                         {user.rank}
                       </div>

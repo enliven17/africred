@@ -1,26 +1,78 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --educhain-blue: #1e40af;
+  --educhain-blue-light: #3b82f6;
+  --educhain-blue-dark: #1e3a8a;
+  --educhain-blue-50: #eff6ff;
+  --educhain-blue-100: #dbeafe;
+  --educhain-blue-200: #bfdbfe;
+  --educhain-blue-300: #93c5fd;
+  --educhain-blue-400: #60a5fa;
+  --educhain-blue-500: #3b82f6;
+  --educhain-blue-600: #2563eb;
+  --educhain-blue-700: #1d4ed8;
+  --educhain-blue-800: #1e40af;
+  --educhain-blue-900: #1e3a8a;
+  
+  --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  --gradient-secondary: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply bg-gray-50;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-blue-600 border-2 border-blue-600 px-6 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1;
+  }
+  
+  .card-modern {
+    @apply bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden;
+  }
+  
+  .gradient-bg {
+    background: var(--gradient-primary);
+  }
+  
+  .gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .glass-effect {
+    @apply bg-white/80 backdrop-blur-md border border-white/20;
+  }
+  
+  .step-card {
+    @apply relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-gray-100 hover:border-blue-200;
+  }
+  
+  .step-card.active {
+    @apply border-blue-500 bg-blue-50;
+  }
+  
+  .step-card.completed {
+    @apply border-green-500 bg-green-50;
+  }
+  
+  .progress-ring {
+    @apply transform -rotate-90;
+  }
+  
+  .progress-ring circle {
+    @apply transition-all duration-300 ease-in-out;
+  }
 }
