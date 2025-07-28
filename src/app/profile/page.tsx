@@ -52,8 +52,8 @@ export default function ProfilePage() {
   ];
 
   const user = {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
+    name: 'Atlas Doruk Aykar',
+    email: 'atlas.aykar@africred.com',
     phone: '+234 123 456 7890',
     location: 'Lagos, Nigeria',
     joinDate: 'January 2024',
@@ -111,6 +111,10 @@ export default function ProfilePage() {
     };
     
     fetchCertificates();
+    
+    // Progress data'yı da yükle
+    const progress = ProgressManager.getAllProgress();
+    setUserProgress(progress);
   }, []);
 
   const getLevelProgress = () => {
@@ -121,40 +125,52 @@ export default function ProfilePage() {
   const levelProgress = getLevelProgress();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      {/* Header */}
+      <div className="gradient-bg text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center"
+          >
+            <h1 className="text-xl md:text-2xl font-bold mb-4">
+              My Profile
+            </h1>
+            <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+              Track your learning journey, achievements, and blockchain-verified certificates
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-xl shadow-sm">
-          {/* Header */}
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h1 className="text-2xl font-bold text-gray-900">Profile</h1>
-          </div>
-
+        <div className="bg-white rounded-2xl shadow-lg">
           {/* Tabs */}
-          <div className="border-b border-gray-200">
-            <nav className="flex space-x-8 px-6">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === tab.id
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  <div className="flex items-center space-x-2">
-                    <tab.icon className="w-4 h-4" />
-                    <span>{tab.label}</span>
-                  </div>
-                </button>
-              ))}
-            </nav>
+          <div className="flex border-b border-gray-100">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-6 py-4 font-medium transition-colors ${
+                  activeTab === tab.id
+                    ? 'bg-blue-500 text-white'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+              >
+                <tab.icon className="w-4 h-4" />
+                {tab.label}
+              </button>
+            ))}
           </div>
 
-          {/* Content */}
+          {/* Tab Content */}
           <div className="p-6">
             {activeTab === 'overview' && (
               <div className="space-y-6">
+                {/* Profile Info */}
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-gray-900">Profile Information</h3>
                   <button
@@ -214,6 +230,101 @@ export default function ProfilePage() {
                     </div>
                   </div>
                 </div>
+
+                {/* Stats */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="text-center p-4 bg-gray-50 rounded-xl">
+                    <div className="text-2xl font-bold text-gray-900">{user.totalMissions}</div>
+                    <div className="text-sm text-gray-600">Total Missions</div>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 rounded-xl">
+                    <div className="text-2xl font-bold text-green-600">{user.completedMissions}</div>
+                    <div className="text-sm text-gray-600">Completed</div>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 rounded-xl">
+                    <div className="text-2xl font-bold text-blue-600">{user.totalScore}</div>
+                    <div className="text-sm text-gray-600">Total Score</div>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 rounded-xl">
+                    <div className="text-2xl font-bold text-purple-600">{certificates.length}</div>
+                    <div className="text-sm text-gray-600">Certificates</div>
+                  </div>
+                </div>
+
+                {/* Achievements */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Achievements</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {achievements.map((achievement) => (
+                      <div
+                        key={achievement.id}
+                        className={`p-4 rounded-xl border-2 ${
+                          achievement.unlocked
+                            ? 'border-green-200 bg-green-50'
+                            : 'border-gray-200 bg-gray-50'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                            achievement.unlocked ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'
+                          }`}>
+                            <achievement.icon className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <div className="font-medium text-gray-900">{achievement.title}</div>
+                            <div className="text-sm text-gray-600">{achievement.description}</div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'progress' && (
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Mission Progress</h3>
+                <div className="space-y-4">
+                  {Object.entries(userProgress).map(([missionId, progress]: [string, any]) => (
+                    <div key={missionId} className="p-4 border border-gray-200 rounded-xl">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-medium text-gray-900">Mission {progress.missionId}</span>
+                        <span className="text-sm text-gray-600">
+                          {progress.score}/{progress.maxScore}
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-blue-500 h-2 rounded-full"
+                          style={{ width: `${(progress.score / progress.maxScore) * 100}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Statistics</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="text-center p-4 bg-gray-50 rounded-xl">
+                      <div className="text-2xl font-bold text-gray-900">{user.totalMissions}</div>
+                      <div className="text-sm text-gray-600">Total Missions</div>
+                    </div>
+                    <div className="text-center p-4 bg-gray-50 rounded-xl">
+                      <div className="text-2xl font-bold text-green-600">{user.completedMissions}</div>
+                      <div className="text-sm text-gray-600">Completed</div>
+                    </div>
+                    <div className="text-center p-4 bg-gray-50 rounded-xl">
+                      <div className="text-2xl font-bold text-blue-600">{user.totalScore}</div>
+                      <div className="text-sm text-gray-600">Total Score</div>
+                    </div>
+                    <div className="text-center p-4 bg-gray-50 rounded-xl">
+                      <div className="text-2xl font-bold text-purple-600">{certificates.length}</div>
+                      <div className="text-sm text-gray-600">Certificates</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 
@@ -256,7 +367,7 @@ export default function ProfilePage() {
                             )}
                           </div>
                         </div>
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col gap-3">
                           <div className="text-sm text-gray-600">
                             Token ID: {tokenId}
                           </div>
@@ -280,6 +391,146 @@ export default function ProfilePage() {
                       </motion.div>
                     );
                   })}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'educator' && (
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Educator Profile</h3>
+                
+                {/* Role Selection */}
+                <div className="bg-white rounded-xl p-6 border border-gray-200">
+                  <h4 className="font-semibold text-gray-900 mb-4">Your Role</h4>
+                  <div className="flex gap-4">
+                    <button
+                      onClick={() => setUserRole('student')}
+                      className={`flex-1 p-4 rounded-lg border-2 transition-all ${
+                        userRole === 'student'
+                          ? 'border-blue-500 bg-blue-50 text-blue-700'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="text-center">
+                        <GraduationCap className="w-8 h-8 mx-auto mb-2" />
+                        <div className="font-medium">Student</div>
+                        <div className="text-sm text-gray-600">Learn and earn rewards</div>
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => setUserRole('educator')}
+                      className={`flex-1 p-4 rounded-lg border-2 transition-all ${
+                        userRole === 'educator'
+                          ? 'border-blue-500 bg-blue-50 text-blue-700'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="text-center">
+                        <Award className="w-8 h-8 mx-auto mb-2" />
+                        <div className="font-medium">Educator</div>
+                        <div className="text-sm text-gray-600">Create and teach</div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Educator Verification */}
+                {userRole === 'educator' && (
+                  <div className="bg-white rounded-xl p-6 border border-gray-200">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="font-semibold text-gray-900">Educator Verification</h4>
+                      {isVerifiedEducator && (
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-sm">
+                          <CheckCircle className="w-4 h-4" />
+                          Verified
+                        </span>
+                      )}
+                    </div>
+                    
+                    {!isVerifiedEducator ? (
+                      <div className="text-center py-8">
+                        <Award className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                        <h5 className="text-lg font-medium text-gray-900 mb-2">Become a Verified Educator</h5>
+                        <p className="text-gray-600 mb-6">
+                          Get verified on EduChain to create missions and earn from your educational content.
+                        </p>
+                        <button
+                          onClick={() => setShowVerificationModal(true)}
+                          className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                        >
+                          Start Verification
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-3 p-4 bg-green-50 rounded-lg">
+                          <CheckCircle className="w-6 h-6 text-green-600" />
+                          <div>
+                            <div className="font-medium text-green-900">Verified Educator</div>
+                            <div className="text-sm text-green-700">You can create missions and earn rewards</div>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="text-center p-4 bg-blue-50 rounded-lg">
+                            <div className="text-2xl font-bold text-blue-600">5</div>
+                            <div className="text-sm text-blue-700">Missions Created</div>
+                          </div>
+                          <div className="text-center p-4 bg-green-50 rounded-lg">
+                            <div className="text-2xl font-bold text-green-600">1,250</div>
+                            <div className="text-sm text-green-700">EDU Earned</div>
+                          </div>
+                        </div>
+                        <Link href="/create-mission">
+                          <button className="w-full px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                            Create New Mission
+                          </button>
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === 'settings' && (
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Profile Settings</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <input
+                      type="text"
+                      defaultValue={user.name}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input
+                      type="email"
+                      defaultValue={user.email}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                    <input
+                      type="tel"
+                      defaultValue={user.phone}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                    <input
+                      type="text"
+                      defaultValue={user.location}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                    Save Changes
+                  </button>
                 </div>
               </div>
             )}
