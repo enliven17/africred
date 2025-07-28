@@ -1,36 +1,168 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 AfriCred - Africa's First Earn-to-Learn Platform
 
-## Getting Started
+> **Where AI meets Education meets Blockchain**
 
-First, run the development server:
+## 🎯 Project Overview
 
+AfriCred is a revolutionary "Earn-to-Learn" platform built on EduChain, designed specifically for African students and educators. Inspired by successful models like BitDegree, AfriCred combines gamification, blockchain technology, and AI to create an inclusive educational ecosystem.
+
+## 🌍 Why AfriCred?
+
+### For Students:
+- **Earn while you learn** - Complete missions and earn crypto rewards
+- **Localized content** - Learn in your native language and cultural context
+- **Offline-first** - Access content even with limited internet connectivity
+- **Community-driven** - Learn from peers and earn by helping others
+
+### For Educators:
+- **Monetize your knowledge** - Create content and earn from student engagement
+- **Reach wider audiences** - Connect with students across Africa
+- **AI-powered tools** - Use AI to create personalized learning experiences
+- **Blockchain credentials** - Issue verifiable certificates and badges
+
+## 🏗️ Technical Architecture
+
+### Frontend (React Native)
+- **Cross-platform** - Works on iOS, Android, and Web
+- **Offline-first** - Syncs when connection is available
+- **Localization** - Supports multiple African languages
+- **Gamification** - Points, badges, leaderboards, and rewards
+
+### Backend (Node.js + Supabase)
+- **Real-time updates** - Live notifications and progress tracking
+- **AI integration** - Content recommendation and personalization
+- **File management** - Efficient storage for educational content
+- **Analytics** - Learning progress and engagement metrics
+
+### Blockchain (EduChain)
+- **Smart contracts** - Automated reward distribution
+- **NFT credentials** - Verifiable certificates and achievements
+- **Decentralized identity** - Self-sovereign student profiles
+- **Token economics** - AfriCred token for platform governance
+
+## 🎮 Core Features
+
+### 1. Mission System
+- **Daily challenges** - Quick tasks for small rewards
+- **Learning paths** - Structured courses with milestone rewards
+- **Community missions** - Collaborative learning challenges
+- **AI-generated content** - Personalized learning materials
+
+### 2. Reward Economy
+- **AfriCred tokens** - Platform's native cryptocurrency
+- **Achievement badges** - NFT-based skill certifications
+- **Leaderboards** - Competitive learning environment
+- **Referral rewards** - Earn by bringing friends to the platform
+
+### 3. Content Creation
+- **AI-powered tools** - Generate educational content with AI
+- **Multi-language support** - Create content in local languages
+- **Offline distribution** - Share content without internet
+- **Quality verification** - Community-driven content validation
+
+### 4. Social Learning
+- **Study groups** - Form learning communities
+- **Peer tutoring** - Earn by teaching others
+- **Discussion forums** - Engage in topic-based conversations
+- **Mentorship programs** - Connect with experienced educators
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React Native** - Cross-platform mobile development
+- **TypeScript** - Type-safe development
+- **Styled Components** - Modern styling approach
+- **Redux Toolkit** - State management
+- **React Navigation** - Navigation system
+
+### Backend
+- **Node.js** - Server runtime
+- **Supabase** - Backend-as-a-Service
+- **OpenAI API** - AI content generation
+- **EduChain SDK** - Blockchain integration
+
+### Blockchain
+- **EduChain** - Educational blockchain platform
+- **Solidity** - Smart contract development
+- **Web3.js** - Blockchain interaction
+- **IPFS** - Decentralized file storage
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v18+)
+- React Native CLI
+- Supabase account
+- EduChain testnet access
+
+### Installation
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone the repository
+git clone https://github.com/your-team/africred.git
+cd africred
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+
+# Start the development server
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📱 Screenshots
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+[Coming soon - Will include screenshots of the app interface]
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🏆 Hackathon Track Alignment
 
-## Learn More
+This project perfectly aligns with the **"Gamified or Earn-to-Learn Models"** track by:
 
-To learn more about Next.js, take a look at the following resources:
+1. **Gamification Elements**: Points, badges, leaderboards, missions
+2. **Earn-to-Learn Mechanics**: Crypto rewards for completing educational tasks
+3. **Social Learning**: Community-driven content and peer-to-peer learning
+4. **Blockchain Integration**: EduChain for credentials and token economics
+5. **AI Enhancement**: Personalized learning experiences and content generation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🌟 Innovation Highlights
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 1. African-First Design
+- **Local language support** - Multiple African languages
+- **Cultural relevance** - Content tailored to African contexts
+- **Offline capability** - Works in areas with poor connectivity
+- **Mobile-first** - Optimized for smartphone usage
 
-## Deploy on Vercel
+### 2. AI + Blockchain Synergy
+- **AI-generated content** - Personalized learning materials
+- **Smart contract rewards** - Automated and transparent payments
+- **NFT credentials** - Verifiable achievements and certificates
+- **Decentralized governance** - Community-driven platform decisions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 3. Scalable Architecture
+- **Modular design** - Easy to extend and maintain
+- **Cross-platform** - Works on all major platforms
+- **Offline-first** - Syncs when connection is available
+- **Performance optimized** - Fast loading and smooth experience
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🤝 Team
+
+- **Developer 1** - Full-stack development & blockchain integration
+- **Developer 2** - Mobile app development & UI/UX
+- **Developer 3** - AI integration & backend services
+- **Developer 4** - Smart contracts & blockchain architecture
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **BitDegree** - Inspiration for the earn-to-learn model
+- **EduChain** - Blockchain infrastructure and support
+- **OpenAI** - AI capabilities and content generation
+- **Supabase** - Backend services and real-time features
+
+---
+
+**Built with ❤️ for Africa's educational future** 

@@ -1,0 +1,364 @@
+'use client';
+
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { 
+  Users, 
+  MessageCircle, 
+  Heart, 
+  Share2, 
+  Send, 
+  TrendingUp,
+  Award,
+  Star,
+  UserPlus,
+  Globe,
+  BookOpen,
+  Zap,
+  Calendar,
+  Wallet
+} from 'lucide-react';
+
+export default function CommunityPage() {
+  const [newPost, setNewPost] = useState('');
+  const [selectedTab, setSelectedTab] = useState('discussions');
+
+  const tabs = [
+    { id: 'discussions', label: 'Discussions', icon: MessageCircle },
+    { id: 'achievements', label: 'Achievements', icon: Award },
+    { id: 'leaderboard', label: 'Leaderboard', icon: TrendingUp },
+    { id: 'events', label: 'Events', icon: Calendar },
+  ];
+
+  const discussions = [
+    {
+      id: 1,
+      author: {
+        name: 'Sarah M.',
+        avatar: '/api/placeholder/40/40',
+        level: 5,
+        country: 'Kenya'
+      },
+      content: 'Just completed the Blockchain Basics mission! The smart contract exercise was challenging but very rewarding. Anyone else working on this?',
+      likes: 24,
+      comments: 8,
+      timeAgo: '2 hours ago',
+      tags: ['blockchain', 'technology', 'learning']
+    },
+    {
+      id: 2,
+      author: {
+        name: 'Kwame A.',
+        avatar: '/api/placeholder/40/40',
+        level: 3,
+        country: 'Ghana'
+      },
+      content: 'The African History Quiz was amazing! Learned so much about our rich cultural heritage. Highly recommend to everyone!',
+      likes: 31,
+      comments: 12,
+      timeAgo: '4 hours ago',
+      tags: ['history', 'culture', 'africa']
+    },
+    {
+      id: 3,
+      author: {
+        name: 'Fatima Z.',
+        avatar: '/api/placeholder/40/40',
+        level: 7,
+        country: 'Morocco'
+      },
+      content: 'Looking for study partners for the Entrepreneurship Fundamentals mission. Anyone interested in forming a study group?',
+      likes: 18,
+      comments: 15,
+      timeAgo: '6 hours ago',
+      tags: ['entrepreneurship', 'study-group', 'collaboration']
+    }
+  ];
+
+  const achievements = [
+    {
+      id: 1,
+      user: 'Sarah M.',
+      achievement: 'Blockchain Pioneer',
+      description: 'Completed 5 technology missions',
+      reward: 100,
+      timeAgo: '1 hour ago'
+    },
+    {
+      id: 2,
+      user: 'Kwame A.',
+      achievement: 'History Scholar',
+      description: 'Completed 3 history missions',
+      reward: 75,
+      timeAgo: '3 hours ago'
+    },
+    {
+      id: 3,
+      user: 'Fatima Z.',
+      achievement: 'Language Master',
+      description: 'Completed 4 language missions',
+      reward: 80,
+      timeAgo: '5 hours ago'
+    }
+  ];
+
+  const leaderboard = [
+    { rank: 1, name: 'Sarah M.', level: 8, points: 1250, country: 'Kenya' },
+    { rank: 2, name: 'Kwame A.', level: 7, points: 1180, country: 'Ghana' },
+    { rank: 3, name: 'Fatima Z.', level: 6, points: 1050, country: 'Morocco' },
+    { rank: 4, name: 'Aisha B.', level: 5, points: 920, country: 'Nigeria' },
+    { rank: 5, name: 'David K.', level: 5, points: 890, country: 'Uganda' }
+  ];
+
+  const stats = [
+    { label: 'Active Members', value: '2,847', icon: Users, color: 'text-blue-500' },
+    { label: 'Total Posts', value: '15,692', icon: MessageCircle, color: 'text-green-500' },
+    { label: 'Countries', value: '32', icon: Globe, color: 'text-purple-500' },
+    { label: 'Study Groups', value: '156', icon: UserPlus, color: 'text-orange-500' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center"
+          >
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              AfriCred Community
+            </h1>
+            <p className="text-xl text-orange-100 max-w-2xl mx-auto">
+              Connect with learners across Africa, share your achievements, and grow together
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <section className="py-8 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {stats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: index * 0.1 }}
+                className="text-center bg-gray-50 rounded-xl p-4"
+              >
+                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg bg-gray-100 mb-3 ${stat.color}`}>
+                  <stat.icon className="w-6 h-6" />
+                </div>
+                <div className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</div>
+                <div className="text-sm text-gray-600">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Create Post */}
+      <section className="py-8 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-xl p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Share Your Learning Journey</h3>
+            <div className="flex gap-4">
+              <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                <span className="text-orange-600 font-semibold">U</span>
+              </div>
+              <div className="flex-1">
+                <textarea
+                  value={newPost}
+                  onChange={(e) => setNewPost(e.target.value)}
+                  placeholder="What have you learned today? Share your achievements, ask questions, or connect with other learners..."
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                  rows={3}
+                />
+                <div className="flex items-center justify-between mt-3">
+                  <div className="flex gap-2">
+                    <button className="text-gray-500 hover:text-orange-600 p-2 rounded-lg hover:bg-orange-50">
+                      <BookOpen className="w-4 h-4" />
+                    </button>
+                    <button className="text-gray-500 hover:text-orange-600 p-2 rounded-lg hover:bg-orange-50">
+                      <Award className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-orange-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors flex items-center gap-2"
+                  >
+                    <Send className="w-4 h-4" />
+                    Post
+                  </motion.button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Tabs */}
+      <section className="py-8 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap gap-2 mb-8">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setSelectedTab(tab.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                  selectedTab === tab.id
+                    ? 'bg-orange-500 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                <tab.icon className="w-4 h-4" />
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Tab Content */}
+          {selectedTab === 'discussions' && (
+            <div className="space-y-6">
+              {discussions.map((discussion, index) => (
+                <motion.div
+                  key={discussion.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: index * 0.1 }}
+                  className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                      <span className="text-orange-600 font-semibold">
+                        {discussion.author.name.charAt(0)}
+                      </span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h4 className="font-semibold text-gray-900">{discussion.author.name}</h4>
+                        <span className="text-sm text-gray-500">Level {discussion.author.level}</span>
+                        <span className="text-sm text-gray-500">•</span>
+                        <span className="text-sm text-gray-500">{discussion.author.country}</span>
+                        <span className="text-sm text-gray-500">•</span>
+                        <span className="text-sm text-gray-500">{discussion.timeAgo}</span>
+                      </div>
+                      <p className="text-gray-700 mb-3">{discussion.content}</p>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <button className="flex items-center gap-1 text-gray-500 hover:text-red-500">
+                            <Heart className="w-4 h-4" />
+                            {discussion.likes}
+                          </button>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button className="flex items-center gap-1 text-gray-500 hover:text-blue-500">
+                            <MessageCircle className="w-4 h-4" />
+                            {discussion.comments}
+                          </button>
+                        </div>
+                        <button className="text-gray-500 hover:text-green-500">
+                          <Share2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <div className="flex gap-2 mt-3">
+                        {discussion.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full"
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+
+          {selectedTab === 'achievements' && (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {achievements.map((achievement, index) => (
+                <motion.div
+                  key={achievement.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: index * 0.1 }}
+                  className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                      <Award className="w-6 h-6 text-yellow-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">{achievement.user}</h4>
+                      <p className="text-sm text-gray-500">{achievement.timeAgo}</p>
+                    </div>
+                  </div>
+                  <h5 className="font-medium text-gray-900 mb-2">{achievement.achievement}</h5>
+                  <p className="text-gray-600 mb-3">{achievement.description}</p>
+                  <div className="flex items-center gap-2">
+                    <Wallet className="w-4 h-4 text-green-500" />
+                    <span className="text-sm font-medium text-green-600">{achievement.reward} credits earned</span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+
+          {selectedTab === 'leaderboard' && (
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="p-6 border-b border-gray-100">
+                <h3 className="text-lg font-semibold text-gray-900">Top Learners</h3>
+              </div>
+              <div className="divide-y divide-gray-100">
+                {leaderboard.map((user, index) => (
+                  <motion.div
+                    key={user.rank}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, delay: index * 0.1 }}
+                    className="flex items-center justify-between p-6 hover:bg-gray-50"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
+                        user.rank === 1 ? 'bg-yellow-500' :
+                        user.rank === 2 ? 'bg-gray-400' :
+                        user.rank === 3 ? 'bg-orange-500' : 'bg-gray-300'
+                      }`}>
+                        {user.rank}
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-gray-900">{user.name}</h4>
+                        <p className="text-sm text-gray-500">{user.country} • Level {user.level}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-semibold text-gray-900">{user.points} points</div>
+                      <div className="text-sm text-gray-500">#{user.rank} rank</div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {selectedTab === 'events' && (
+            <div className="text-center py-12">
+              <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Coming Soon!</h3>
+              <p className="text-gray-600">Community events and meetups will be available soon.</p>
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
+  );
+} 
