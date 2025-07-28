@@ -5,7 +5,7 @@ export const EDUCHAIN_TESTNET: EduChainConfig = {
   chainId: '0xA0A4C', // 656476 in hex
   chainName: 'EDU Chain Testnet',
   nativeCurrency: {
-    name: 'EDU',
+    name: 'EDU Token',
     symbol: 'EDU',
     decimals: 18,
   },
@@ -23,7 +23,7 @@ export const EDUCHAIN_MAINNET: EduChainConfig = {
   chainId: '0xA3E3', // 41923 in hex
   chainName: 'EDU Chain',
   nativeCurrency: {
-    name: 'EDU',
+    name: 'EDU Token',
     symbol: 'EDU',
     decimals: 18,
   },
@@ -43,6 +43,11 @@ export const addEduChainToWallet = async (isTestnet: boolean = true): Promise<bo
 
   const config = getEduChainConfig(isTestnet);
 
+  // Validate network configuration
+  if (!config.chainId || !config.chainName || !config.rpcUrls || config.rpcUrls.length === 0) {
+    throw new Error('Invalid network configuration');
+  }
+
   try {
     await (window as any).ethereum.request({
       method: 'wallet_addEthereumChain',
@@ -53,13 +58,24 @@ export const addEduChainToWallet = async (isTestnet: boolean = true): Promise<bo
           nativeCurrency: config.nativeCurrency,
           rpcUrls: config.rpcUrls,
           blockExplorerUrls: config.blockExplorerUrls,
+          iconUrls: ['https://edu-chain-testnet.blockscout.com/favicon.ico'], // Add icon URL
         },
       ],
     });
     return true;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to add EduChain to wallet:', error);
-    return false;
+    
+    // Handle specific error cases
+    if (error.code === 4001) {
+      throw new Error('User rejected the network addition request');
+    } else if (error.code === -32602) {
+      throw new Error('Invalid network parameters. Please try again.');
+    } else if (error.code === -32603) {
+      throw new Error('Network addition failed. Please try again.');
+    } else {
+      throw new Error(`Failed to add network: ${error.message || 'Unknown error'}`);
+    }
   }
 };
 
@@ -79,22 +95,88 @@ export const switchToEduChain = async (isTestnet: boolean = true): Promise<boole
   } catch (switchError: any) {
     // This error code indicates that the chain has not been added to MetaMask
     if (switchError.code === 4902) {
+      console.log('Network not found, attempting to add...');
       return await addEduChainToWallet(isTestnet);
+    } else if (switchError.code === 4001) {
+      throw new Error('User rejected the network switch request');
+    } else if (switchError.code === -32603) {
+      throw new Error('Network switch failed. Please try again.');
+    } else {
+      throw new Error(`Failed to switch network: ${switchError.message || 'Unknown error'}`);
     }
-    throw switchError;
   }
+};
+
+// Global wallet state management
+let globalWalletState: WalletState = {
+  isConnected: false,
+  address: null,
+  balance: null,
+  chainId: null,
+  isCorrectNetwork: false,
+};
+
+let walletStateListeners: ((state: WalletState) => void)[] = [];
+
+export const subscribeToWalletState = (listener: (state: WalletState) => void) => {
+  walletStateListeners.push(listener);
+  // Immediately call with current state
+  listener(globalWalletState);
+  
+  return () => {
+    walletStateListeners = walletStateListeners.filter(l => l !== listener);
+  };
+};
+
+const updateGlobalWalletState = (newState: WalletState) => {
+  globalWalletState = newState;
+  walletStateListeners.forEach(listener => listener(newState));
+};
+
+export const getGlobalWalletState = (): WalletState => {
+  return globalWalletState;
 };
 
 export const connectWallet = async (): Promise<WalletState> => {
   if (typeof (window as any).ethereum === 'undefined') {
-    throw new Error('MetaMask is not installed');
+    throw new Error('MetaMask is not installed. Please install MetaMask and try again.');
+  }
+
+  // Check if MetaMask is unlocked
+  try {
+    const accounts = await (window as any).ethereum.request({
+      method: 'eth_accounts',
+    });
+    
+    if (!accounts || accounts.length === 0) {
+      // Request account access
+      const requestedAccounts = await (window as any).ethereum.request({
+        method: 'eth_requestAccounts',
+      });
+
+      if (!requestedAccounts || requestedAccounts.length === 0) {
+        throw new Error('No accounts found. Please unlock MetaMask and try again.');
+      }
+    }
+  } catch (error: any) {
+    if (error.code === 4001) {
+      throw new Error('User rejected the connection request. Please approve the connection in MetaMask.');
+    } else if (error.code === -32002) {
+      throw new Error('Connection request already pending. Please check MetaMask and approve the connection.');
+    } else {
+      throw new Error(`Connection failed: ${error.message || 'Unknown error'}`);
+    }
   }
 
   try {
-    // Request account access
+    // Get current accounts
     const accounts = await (window as any).ethereum.request({
-      method: 'eth_requestAccounts',
+      method: 'eth_accounts',
     });
+
+    if (!accounts || accounts.length === 0) {
+      throw new Error('No accounts found. Please unlock MetaMask and try again.');
+    }
 
     const address = accounts[0];
     const chainId = await (window as any).ethereum.request({
@@ -110,7 +192,7 @@ export const connectWallet = async (): Promise<WalletState> => {
       params: [address, 'latest'],
     });
 
-    return {
+    const walletState = {
       isConnected: true,
       address,
       balance: balance ? (parseInt(balance, 16) / Math.pow(10, 18)).toFixed(4) : '0',
@@ -118,21 +200,35 @@ export const connectWallet = async (): Promise<WalletState> => {
       isCorrectNetwork,
       explorerUrl: `${config.blockExplorerUrls[0]}/address/${address}`,
     };
-  } catch (error) {
+
+    // Update global state
+    updateGlobalWalletState(walletState);
+    
+    return walletState;
+  } catch (error: any) {
     console.error('Failed to connect wallet:', error);
-    throw error;
+    
+    if (error.code === 4001) {
+      throw new Error('User rejected the connection request');
+    } else if (error.code === -32002) {
+      throw new Error('Connection request already pending. Please check MetaMask.');
+    } else {
+      throw new Error(`Connection failed: ${error.message || 'Unknown error'}`);
+    }
   }
 };
 
 export const getWalletState = async (): Promise<WalletState> => {
   if (typeof (window as any).ethereum === 'undefined') {
-    return {
+    const disconnectedState = {
       isConnected: false,
       address: null,
       balance: null,
       chainId: null,
       isCorrectNetwork: false,
     };
+    updateGlobalWalletState(disconnectedState);
+    return disconnectedState;
   }
 
   try {
@@ -141,13 +237,15 @@ export const getWalletState = async (): Promise<WalletState> => {
     });
 
     if (accounts.length === 0) {
-      return {
+      const disconnectedState = {
         isConnected: false,
         address: null,
         balance: null,
         chainId: null,
         isCorrectNetwork: false,
       };
+      updateGlobalWalletState(disconnectedState);
+      return disconnectedState;
     }
 
     const address = accounts[0];
@@ -163,7 +261,7 @@ export const getWalletState = async (): Promise<WalletState> => {
       params: [address, 'latest'],
     });
 
-    return {
+    const walletState = {
       isConnected: true,
       address,
       balance: balance ? (parseInt(balance, 16) / Math.pow(10, 18)).toFixed(4) : '0',
@@ -171,15 +269,22 @@ export const getWalletState = async (): Promise<WalletState> => {
       isCorrectNetwork,
       explorerUrl: `${config.blockExplorerUrls[0]}/address/${address}`,
     };
+
+    // Update global state
+    updateGlobalWalletState(walletState);
+    
+    return walletState;
   } catch (error) {
     console.error('Failed to get wallet state:', error);
-    return {
+    const errorState = {
       isConnected: false,
       address: null,
       balance: null,
       chainId: null,
       isCorrectNetwork: false,
     };
+    updateGlobalWalletState(errorState);
+    return errorState;
   }
 };
 

@@ -11,67 +11,81 @@ import {
   X,
   Loader2
 } from 'lucide-react';
-import { connectWallet, switchToEduChain, getWalletState, formatAddress, getFaucetUrl } from '@/lib/educhain';
-import { WalletState } from '@/types/blockchain';
+import { connectWallet, switchToEduChain, formatAddress, getFaucetUrl } from '@/lib/educhain';
+import { useWallet } from '@/hooks/useWallet';
+import { getWalletConnectionHelp } from '@/utils/wallet-helpers';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 
 export default function Navbar() {
-  const [walletState, setWalletState] = useState<WalletState>({
-    isConnected: false,
-    address: null,
-    balance: null,
-    chainId: null,
-    isCorrectNetwork: false,
-  });
+  const { walletState, refreshWalletState } = useWallet();
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
+  const [connectionError, setConnectionError] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    checkWalletState();
-    
     if (typeof (window as any).ethereum !== 'undefined') {
-      (window as any).ethereum.on('accountsChanged', checkWalletState);
-      (window as any).ethereum.on('chainChanged', checkWalletState);
-    }
+      const handleAccountsChanged = () => refreshWalletState();
+      const handleChainChanged = () => refreshWalletState();
+      
+      (window as any).ethereum.on('accountsChanged', handleAccountsChanged);
+      (window as any).ethereum.on('chainChanged', handleChainChanged);
 
-    return () => {
-      if (typeof (window as any).ethereum !== 'undefined') {
-        (window as any).ethereum.removeListener('accountsChanged', checkWalletState);
-        (window as any).ethereum.removeListener('chainChanged', checkWalletState);
-      }
-    };
-  }, []);
-
-  const checkWalletState = async () => {
-    try {
-      const state = await getWalletState();
-      setWalletState(state);
-    } catch (error) {
-      console.error('Failed to check wallet state:', error);
+      return () => {
+        (window as any).ethereum.removeListener('accountsChanged', handleAccountsChanged);
+        (window as any).ethereum.removeListener('chainChanged', handleChainChanged);
+      };
     }
-  };
+  }, [refreshWalletState]);
+
+  // Auto-close modal when wallet is connected
+  useEffect(() => {
+    if (walletState.isConnected && showWalletModal) {
+      setShowWalletModal(false);
+      setConnectionError(null);
+      setIsConnecting(false);
+    }
+  }, [walletState.isConnected, showWalletModal]);
 
   const handleConnectWallet = async () => {
     setIsConnecting(true);
+    setConnectionError(null);
+    
     try {
       const state = await connectWallet();
-      setWalletState(state);
       
       if (!state.isCorrectNetwork) {
-        await switchToEduChain(true);
-        await checkWalletState();
+        try {
+          await switchToEduChain(true);
+          // Re-check wallet state after network switch
+          await refreshWalletState();
+        } catch (networkError: any) {
+          console.error('Network switch failed:', networkError);
+          const helpMessage = getWalletConnectionHelp(networkError.message);
+          setConnectionError(`Connected to wallet but failed to switch to EduChain. ${helpMessage}`);
+          // Don't close modal if network switch fails
+          return;
+        }
       }
       
+      // Close modal only if everything is successful
       setShowWalletModal(false);
-    } catch (error) {
+      setConnectionError(null);
+    } catch (error: any) {
       console.error('Wallet connection failed:', error);
-      alert('Failed to connect wallet. Please try again.');
+      const helpMessage = getWalletConnectionHelp(error.message);
+      setConnectionError(`${error.message} ${helpMessage}`);
     } finally {
       setIsConnecting(false);
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowWalletModal(false);
+    setConnectionError(null);
+    setIsConnecting(false);
   };
 
   const isActive = (path: string) => {
@@ -99,6 +113,7 @@ export default function Navbar() {
                 </Link>
               </div>
             </div>
+
             <div className="flex items-center space-x-4">
               <Link 
                 href="/missions"
@@ -109,16 +124,6 @@ export default function Navbar() {
                 }`}
               >
                 Missions
-              </Link>
-              <Link 
-                href="/create-mission"
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
-                  isActive('/create-mission') 
-                    ? 'text-blue-600 bg-blue-50 border border-blue-200' 
-                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
-                }`}
-              >
-                Create Mission
               </Link>
               <Link 
                 href="/community"
@@ -194,17 +199,34 @@ export default function Navbar() {
               <p className="text-gray-600 mb-6">
                 Connect your wallet to start earning rewards on Africa's first earn-to-learn platform
               </p>
+              
+              {/* Error Message */}
+              {connectionError && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-sm text-red-700">{connectionError}</p>
+                </div>
+              )}
+              
               <div className="space-y-3">
                 <button
                   onClick={handleConnectWallet}
                   disabled={isConnecting}
                   className="w-full bg-blue-500 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Zap className="w-5 h-5" />
-                  {isConnecting ? 'Connecting...' : 'Connect with MetaMask'}
+                  {isConnecting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Connecting...
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="w-5 h-5" />
+                      Connect with MetaMask
+                    </>
+                  )}
                 </button>
                 <button
-                  onClick={() => setShowWalletModal(false)}
+                  onClick={handleCloseModal}
                   className="w-full border border-gray-300 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-50 transition-colors"
                 >
                   Cancel
