@@ -682,7 +682,10 @@ export default function LearningPathPage() {
                       </span>
                       
                       <div className="text-right">
-                        <div className="font-semibold text-gray-900">{step.reward} EDU</div>
+                        <div className="font-semibold text-gray-900 flex items-center gap-1">
+                          <span>{step.reward}</span>
+                          <span>EDU</span>
+                        </div>
                         <div className="text-sm text-gray-500">{step.timeEstimate}</div>
                       </div>
                       

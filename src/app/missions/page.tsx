@@ -567,8 +567,11 @@ export default function MissionsPage() {
                                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(step.type)}`}>
                                   {step.type}
                                 </span>
-                                <div className="text-right">
-                                  <div className="text-sm font-medium text-gray-900">{step.reward} EDU</div>
+                                <div className="flex flex-col items-end gap-1">
+                                  <div className="text-sm font-medium text-gray-900 flex items-center gap-1">
+                                    <span>{step.reward}</span>
+                                    <span>EDU</span>
+                                  </div>
                                   <div className="text-xs text-gray-500">{step.timeEstimate}</div>
                                 </div>
                                 {status !== 'locked' && (
@@ -643,8 +646,11 @@ export default function MissionsPage() {
                                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(step.type)}`}>
                                     {step.type}
                                   </span>
-                                  <div className="text-right">
-                                    <div className="text-sm font-medium text-gray-900">{step.reward} EDU</div>
+                                  <div className="flex flex-col items-end gap-1">
+                                    <div className="text-sm font-medium text-gray-900 flex items-center gap-1">
+                                      <span>{step.reward}</span>
+                                      <span>EDU</span>
+                                    </div>
                                     <div className="text-xs text-gray-500">{step.timeEstimate}</div>
                                   </div>
                                   {status !== 'locked' && (

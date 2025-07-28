@@ -157,7 +157,7 @@ export default function Navbar() {
                     {walletState.address ? formatAddress(walletState.address) : ''}
                   </span>
                   {walletState.balance && (
-                    <span className="text-xs text-green-600">
+                    <span className="text-xs text-green-600 ml-2">
                       {walletState.balance} EDU
                     </span>
                   )}

@@ -330,14 +330,19 @@ export default function WalletPage() {
                           <div className="flex items-center gap-3">
                             {getTransactionStatusIcon(tx.status)}
                             <div>
-                              <div className="font-medium text-gray-900">
-                                {tx.status === 'success' ? 'Received' : 'Pending'} {tx.value} EDU
+                              <div className="font-medium text-gray-900 flex items-center gap-1">
+                                <span>{tx.status === 'success' ? 'Received' : 'Pending'}</span>
+                                <span>{tx.value}</span>
+                                <span>EDU</span>
                               </div>
                               <div className="text-sm text-gray-500">{formatDate(tx.timestamp)}</div>
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="text-sm font-medium text-gray-900">+{tx.value} EDU</div>
+                            <div className="text-sm font-medium text-gray-900 flex items-center gap-1">
+                              <span>+{tx.value}</span>
+                              <span>EDU</span>
+                            </div>
                             <div className="text-xs text-gray-500">{tx.status}</div>
                           </div>
                         </div>
@@ -372,7 +377,10 @@ export default function WalletPage() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="font-semibold text-gray-900">{tx.value} EDU</div>
+                          <div className="font-semibold text-gray-900 flex items-center gap-1">
+                            <span>{tx.value}</span>
+                            <span>EDU</span>
+                          </div>
                           <div className="text-sm text-gray-500">{tx.status}</div>
                         </div>
                       </motion.div>
@@ -405,7 +413,10 @@ export default function WalletPage() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="font-semibold text-green-600">+{reward.amount} EDU</div>
+                          <div className="font-semibold text-green-600 flex items-center gap-1">
+                            <span>+{reward.amount}</span>
+                            <span>EDU</span>
+                          </div>
                           <div className="text-sm text-gray-500">{reward.status}</div>
                         </div>
                       </motion.div>

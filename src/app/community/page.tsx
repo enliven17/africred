@@ -409,7 +409,11 @@ export default function CommunityPage() {
                   <p className="text-gray-600 mb-3">{achievement.description}</p>
                   <div className="flex items-center gap-2">
                     <Wallet className="w-4 h-4 text-green-500" />
-                                            <span className="text-sm font-medium text-green-600">{achievement.reward} EDU earned</span>
+                                            <span className="text-sm font-medium text-green-600 flex items-center gap-1">
+                          <span>{achievement.reward}</span>
+                          <span>EDU</span>
+                          <span>earned</span>
+                        </span>
                   </div>
                 </motion.div>
               ))}

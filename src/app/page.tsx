@@ -235,7 +235,10 @@ export default function Home() {
                       </div>
                       <div className="flex items-center gap-1">
                         <Wallet className="w-4 h-4 text-green-500" />
-                        <span className="text-sm font-medium text-green-600">{mission.reward} EDU</span>
+                        <span className="text-sm font-medium text-green-600 flex items-center gap-1">
+                          <span>{mission.reward}</span>
+                          <span>EDU</span>
+                        </span>
                       </div>
                     </div>
                     <span className="text-sm text-gray-500">{mission.timeEstimate}</span>
