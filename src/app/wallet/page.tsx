@@ -98,8 +98,8 @@ export default function WalletPage() {
 
   const stats = [
     { label: 'Total Balance', value: walletState.balance || '0', icon: Wallet, color: 'text-green-500' },
-    { label: 'Total Earned', value: '₿ 455', icon: TrendingUp, color: 'text-blue-500' },
-    { label: 'Pending Rewards', value: '₿ 125', icon: Clock, color: 'text-blue-500' },
+    { label: 'Total Earned', value: '455 EDU', icon: TrendingUp, color: 'text-blue-500' },
+    { label: 'Pending Rewards', value: '125 EDU', icon: Clock, color: 'text-blue-500' },
     { label: 'Transactions', value: transactions.length.toString(), icon: TrendingDown, color: 'text-purple-500' },
   ];
 

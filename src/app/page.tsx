@@ -18,7 +18,7 @@ export default function Home() {
 
   const stats = [
     { label: 'Active Learners', value: '2,847', icon: Users, color: 'text-blue-500', change: '+12%' },
-    { label: 'Total Rewards', value: '₿ 1,234', icon: Wallet, color: 'text-green-500', change: '+8%' },
+    { label: 'Total Rewards', value: '1,234 EDU', icon: Wallet, color: 'text-green-500', change: '+8%' },
     { label: 'Completed Missions', value: '15,692', icon: Trophy, color: 'text-yellow-500', change: '+15%' },
     { label: 'Success Rate', value: '94%', icon: TrendingUp, color: 'text-purple-500', change: '+2%' },
   ];
@@ -27,7 +27,7 @@ export default function Home() {
     {
       id: 1,
       title: 'Learn Basic Mathematics',
-      description: 'Complete 10 math problems to earn credits',
+      description: 'Complete 10 math problems to earn EDU tokens',
       reward: 50,
       difficulty: 'Easy',
       participants: 150,
@@ -235,7 +235,7 @@ export default function Home() {
                       </div>
                       <div className="flex items-center gap-1">
                         <Wallet className="w-4 h-4 text-green-500" />
-                        <span className="text-sm font-medium text-green-600">{mission.reward} credits</span>
+                        <span className="text-sm font-medium text-green-600">{mission.reward} EDU</span>
                       </div>
                     </div>
                     <span className="text-sm text-gray-500">{mission.timeEstimate}</span>

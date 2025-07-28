@@ -391,7 +391,7 @@ export default function StepPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Reward</span>
-                    <span className="font-medium text-green-600">{stepData.reward} credits</span>
+                                            <span className="font-medium text-green-600">{stepData.reward} EDU</span>
                   </div>
                 </div>
               </div>

@@ -16,7 +16,10 @@ import {
   BookOpen,
   Zap,
   Calendar,
-  Wallet
+  Wallet,
+  CheckCircle,
+  AlertCircle,
+  X
 } from 'lucide-react';
 import { getWalletState } from '@/lib/educhain';
 import { useEffect } from 'react';
@@ -25,6 +28,7 @@ export default function CommunityPage() {
   const [newPost, setNewPost] = useState('');
   const [selectedTab, setSelectedTab] = useState('discussions');
   const [walletConnected, setWalletConnected] = useState(false);
+  const [notification, setNotification] = useState<{ type: 'success' | 'error' | 'info', message: string } | null>(null);
   const [posts, setPosts] = useState([
     {
       id: 1,
@@ -133,12 +137,14 @@ export default function CommunityPage() {
     // Wallet connection check for posting
   const handlePost = () => {
     if (!walletConnected) {
-      alert('Please connect your wallet to post messages in the community.');
+      setNotification({ type: 'error', message: 'Please connect your wallet to post messages in the community.' });
+      setTimeout(() => setNotification(null), 4000);
       return;
     }
     
     if (!newPost.trim()) {
-      alert('Please enter a message to post.');
+      setNotification({ type: 'error', message: 'Please enter a message to post.' });
+      setTimeout(() => setNotification(null), 4000);
       return;
     }
 
@@ -163,7 +169,8 @@ export default function CommunityPage() {
     setNewPost('');
     
     // Show success message
-    alert('Post shared successfully! 🎉');
+    setNotification({ type: 'success', message: 'Post shared successfully! 🎉' });
+    setTimeout(() => setNotification(null), 4000);
   };
 
   return (
@@ -186,6 +193,41 @@ export default function CommunityPage() {
           </motion.div>
         </div>
       </div>
+
+      {/* Notification */}
+      {notification && (
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -50 }}
+          className={`fixed top-4 right-4 z-50 max-w-sm p-4 rounded-lg shadow-lg border-l-4 ${
+            notification.type === 'success' 
+              ? 'bg-green-50 border-green-400 text-green-800' 
+              : notification.type === 'error'
+              ? 'bg-red-50 border-red-400 text-red-800'
+              : 'bg-blue-50 border-blue-400 text-blue-800'
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            {notification.type === 'success' ? (
+              <CheckCircle className="w-5 h-5 text-green-600" />
+            ) : notification.type === 'error' ? (
+              <AlertCircle className="w-5 h-5 text-red-600" />
+            ) : (
+              <AlertCircle className="w-5 h-5 text-blue-600" />
+            )}
+            <div className="flex-1">
+              <p className="text-sm font-medium">{notification.message}</p>
+            </div>
+            <button
+              onClick={() => setNotification(null)}
+              className="text-gray-400 hover:text-gray-600"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </motion.div>
+      )}
 
       {/* Stats */}
       <section className="py-8 bg-white">
@@ -367,7 +409,7 @@ export default function CommunityPage() {
                   <p className="text-gray-600 mb-3">{achievement.description}</p>
                   <div className="flex items-center gap-2">
                     <Wallet className="w-4 h-4 text-green-500" />
-                    <span className="text-sm font-medium text-green-600">{achievement.reward} credits earned</span>
+                                            <span className="text-sm font-medium text-green-600">{achievement.reward} EDU earned</span>
                   </div>
                 </motion.div>
               ))}

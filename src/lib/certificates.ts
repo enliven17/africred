@@ -169,8 +169,37 @@ export class ProgressManager {
 
   static getAllProgress(): Record<number, any> {
     try {
-      const stored = localStorage.getItem(this.STORAGE_KEY);
-      return stored ? JSON.parse(stored) : {};
+      // Her zaman demo data'yı döndür (development için)
+      const demoProgress = {
+        1: {
+          missionId: '1',
+          missionTitle: 'Mathematics Fundamentals',
+          score: 85,
+          maxScore: 100,
+          completed: true,
+          issuedAt: new Date().toISOString()
+        },
+        2: {
+          missionId: '2',
+          missionTitle: 'Blockchain Basics',
+          score: 92,
+          maxScore: 100,
+          completed: true,
+          issuedAt: new Date().toISOString()
+        },
+        3: {
+          missionId: '3',
+          missionTitle: 'Smart Contract Development',
+          score: 78,
+          maxScore: 100,
+          completed: false,
+          issuedAt: null
+        }
+      };
+      
+      // Demo data'yı localStorage'a kaydet
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(demoProgress));
+      return demoProgress;
     } catch (error) {
       console.error('Failed to get all progress:', error);
       return {};

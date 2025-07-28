@@ -286,22 +286,49 @@ export default function ProfilePage() {
               <div className="space-y-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Mission Progress</h3>
                 <div className="space-y-4">
-                  {Object.entries(userProgress).map(([missionId, progress]: [string, any]) => (
-                    <div key={missionId} className="p-4 border border-gray-200 rounded-xl">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-gray-900">Mission {progress.missionId}</span>
-                        <span className="text-sm text-gray-600">
-                          {progress.score}/{progress.maxScore}
-                        </span>
+                  {Object.entries(userProgress).map(([missionId, progress]: [string, any]) => {
+                    // Mission adlarını belirle
+                    const getMissionName = (id: string) => {
+                      switch (id) {
+                        case '1': return 'Mathematics Fundamentals';
+                        case '2': return 'Blockchain Basics';
+                        case '3': return 'Smart Contract Development';
+                        case '4': return 'Web3 Integration';
+                        case '5': return 'DeFi Fundamentals';
+                        default: return `Mission ${id}`;
+                      }
+                    };
+                    
+                    return (
+                      <div key={missionId} className="p-4 border border-gray-200 rounded-xl">
+                        <div className="flex items-center justify-between mb-2">
+                          <div>
+                            <span className="font-medium text-gray-900">{getMissionName(progress.missionId)}</span>
+                            {progress.missionTitle && progress.missionTitle !== getMissionName(progress.missionId) && (
+                              <p className="text-sm text-gray-500 mt-1">{progress.missionTitle}</p>
+                            )}
+                          </div>
+                          <div className="text-right">
+                            <span className="text-sm text-gray-600">
+                              {progress.score}/{progress.maxScore}
+                            </span>
+                            {progress.completed && (
+                              <div className="flex items-center gap-1 mt-1">
+                                <CheckCircle className="w-3 h-3 text-green-500" />
+                                <span className="text-xs text-green-600">Completed</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div 
+                            className="bg-blue-500 h-2 rounded-full"
+                            style={{ width: `${(progress.score / progress.maxScore) * 100}%` }}
+                          ></div>
+                        </div>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-blue-500 h-2 rounded-full"
-                          style={{ width: `${(progress.score / progress.maxScore) * 100}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
                 <div className="mt-8">

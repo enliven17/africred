@@ -308,7 +308,7 @@ export default function MissionsPage() {
   const stats = [
     { label: 'Learning Paths', value: learningPaths.length, icon: Target, color: 'text-blue-500' },
     { label: 'Completed Steps', value: Object.values(userProgress).filter(p => p.isCompleted).length, icon: Trophy, color: 'text-green-500' },
-    { label: 'Total Rewards', value: '₿ 2,150', icon: Wallet, color: 'text-yellow-500' },
+    { label: 'Total Rewards', value: '2,150 EDU', icon: Wallet, color: 'text-yellow-500' },
     { label: 'Active Learners', value: '3,247', icon: Users, color: 'text-purple-500' },
   ];
 
@@ -505,7 +505,7 @@ export default function MissionsPage() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-2xl font-bold">{path.maxReward}</div>
+                        <div className="text-2xl font-bold">{path.maxReward} EDU</div>
                         <div className="text-sm text-blue-100">Total Rewards</div>
                       </div>
                     </div>
@@ -568,7 +568,7 @@ export default function MissionsPage() {
                                   {step.type}
                                 </span>
                                 <div className="text-right">
-                                  <div className="text-sm font-medium text-gray-900">{step.reward} credits</div>
+                                  <div className="text-sm font-medium text-gray-900">{step.reward} EDU</div>
                                   <div className="text-xs text-gray-500">{step.timeEstimate}</div>
                                 </div>
                                 {status !== 'locked' && (
@@ -644,7 +644,7 @@ export default function MissionsPage() {
                                     {step.type}
                                   </span>
                                   <div className="text-right">
-                                    <div className="text-sm font-medium text-gray-900">{step.reward} credits</div>
+                                    <div className="text-sm font-medium text-gray-900">{step.reward} EDU</div>
                                     <div className="text-xs text-gray-500">{step.timeEstimate}</div>
                                   </div>
                                   {status !== 'locked' && (
