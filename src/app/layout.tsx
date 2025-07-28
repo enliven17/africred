@@ -12,8 +12,11 @@ export const metadata: Metadata = {
   keywords: ["Africa", "education", "blockchain", "earn-to-learn", "crypto", "learning platform"],
   authors: [{ name: "AfriCred Team" }],
   icons: {
-    icon: '/logo.png',
-    shortcut: '/logo.png',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/logo.png', sizes: '32x32', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
     apple: '/logo.png',
   },
   openGraph: {

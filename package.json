@@ -6,20 +6,17 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:security": "eslint --config eslint.config.mjs --ext .ts,.tsx src/",
+    "security:audit": "npm audit && npm audit fix",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@headlessui/react": "^2.2.6",
-    "@reduxjs/toolkit": "^2.8.2",
-    "clsx": "^2.1.1",
     "framer-motion": "^12.23.10",
     "lucide-react": "^0.528.0",
     "next": "15.4.4",
-    "nft.storage": "^7.2.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-redux": "^9.2.0",
-    "tailwind-merge": "^3.3.1",
     "web3": "^4.16.0"
   },
   "devDependencies": {

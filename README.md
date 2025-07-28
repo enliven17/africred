@@ -99,6 +99,13 @@ AfriCred is an "Earn-to-Learn" platform built on EduChain, designed for African 
 - EduChain testnet access
 - Supabase account (for future backend integration)
 
+### Security Setup
+1. Copy `.env.example` to `.env.local`
+2. Fill in your private keys and API credentials
+3. Never commit `.env.local` to version control
+4. Use strong, unique passwords for all accounts
+5. Enable 2FA where possible
+
 ### Installation
 ```bash
 # Clone the repository
@@ -183,6 +190,24 @@ npx hardhat run scripts/mint-demo-certificate.js --network edu-chain-testnet
 - **Modular design** - Easy to extend and maintain
 - **Performance optimized** - Fast loading and smooth experience
 - **Developer friendly** - Clear code structure and documentation
+
+## 🔒 Security Features
+
+### Implemented Security Measures
+- **Security Headers** - XSS protection, content type validation, frame options
+- **Content Security Policy** - Prevents code injection attacks
+- **Input Validation** - Sanitizes user inputs and validates data formats
+- **Rate Limiting** - Prevents abuse and DDoS attacks
+- **Secure Storage** - Encrypted local storage for sensitive data
+- **CORS Protection** - Cross-origin request validation
+- **Environment Variables** - Secure configuration management
+
+### Best Practices
+- Private keys stored in environment variables
+- Input sanitization for all user data
+- HTTPS enforcement in production
+- Regular security audits and updates
+- Secure coding practices with ESLint rules
 
 ## 🤝 Development Team
 

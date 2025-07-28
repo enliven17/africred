@@ -87,7 +87,7 @@ export default function Home() {
               Africa's First Earn-to-Learn Platform on EduChain
             </p>
             <p className="text-lg mb-12 text-blue-200 max-w-4xl mx-auto leading-relaxed">
-              Learn, earn, and grow with Africa's revolutionary educational platform built on blockchain. 
+              Learn, earn, and grow with Africa's educational platform built on blockchain. 
               Complete missions, earn crypto rewards, and build your future with verifiable credentials.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
